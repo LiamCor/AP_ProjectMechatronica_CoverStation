@@ -1,0 +1,116 @@
+﻿FUNCTION_BLOCK "FB_ControlRecipes"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      iCmdLoadNewRecipe : Bool;
+      iNewRecipeType : Int;   // 1 of 2 (zwart/metaal)
+      iNewRecipeAantal : Int;
+      iCmdRemoveRecipe : Bool;
+      iRecipeToBeRemoved : Int;   // 0, 1, 2, 3 of 4
+      iCmdFirstRecipeFinished : Bool;   // wordt door PLC zelf hoog gezet
+   END_VAR
+
+   VAR_OUTPUT 
+      oEmpty : Bool;
+      oFull : Bool;
+      oActiveRecipe : "UDT_Recipe";
+   END_VAR
+
+   VAR 
+      sFreeSlots : Int;
+      i1 : Int;
+      i2 : Int;
+      i3 : Int;
+      sAddRecipe : Bool;
+      sRemoveRecipe : Bool;
+      sFirstRecipeFinished : Bool;
+   END_VAR
+
+
+BEGIN
+	REGION General
+	    
+	    //positive trigger om nieuw recept toe te voegen
+	    "R_TRIG_DB"(CLK := #iCmdLoadNewRecipe,
+	                Q => #sAddRecipe);
+	    
+	    //positive trigger om recept te verwijderen
+	    "R_TRIG_DB_1"(CLK:=#iCmdRemoveRecipe,
+	                  Q=>#sRemoveRecipe);
+	    
+	    //positive trigger als eerste recept klaar is
+	    "R_TRIG_DB_2"(CLK:=#iCmdFirstRecipeFinished,
+	                  Q=>#sFirstRecipeFinished);
+	    
+	    //aantal lege slots bepalen in DB_Recipes adhv #i1
+	    #sFreeSlots := 0;
+	    FOR #i1 := 0 TO 4 DO
+	        IF "DB_Recipes".Recipes[#i1].Type = 0 THEN
+	            #sFreeSlots := #sFreeSlots + 1;
+	        END_IF;
+	    END_FOR;
+	    
+	    //full hoog zetten als er 5 recepten in wachtrij staan
+	    IF #sFreeSlots = 0 THEN
+	        #oFull := 1;
+	    ELSE
+	        #oFull := 0;
+	    END_IF;
+	    
+	    //empty hoog zetten als er geen recepten in de wachtrij staan
+	    IF #sFreeSlots = 5 THEN
+	        #oEmpty := 1;
+	    ELSE
+	        #oEmpty := 0;
+	    END_IF;
+	    
+	    //schrijven naar oActiveRecipe
+	    #oActiveRecipe.Type := "DB_Recipes".Recipes[0].Type;
+	    #oActiveRecipe.Aantal := "DB_Recipes".Recipes[0].Aantal;
+	    
+	END_REGION
+	
+	REGION Add
+	    
+	    //schrijven naar DB_Recipes als er plaats is
+	    IF NOT(#sFreeSlots = 0) THEN
+	        //toevoegen van nieuw recept en resetten van inputs type/aantal
+	        IF #sAddRecipe THEN
+	            "DB_Recipes".Recipes[5 - #sFreeSlots].Type := #iNewRecipeType;
+	            "DB_Recipes".Recipes[5 - #sFreeSlots].Aantal := #iNewRecipeAantal;
+	            "DB_MES"."IO van FB_ControlRecipes".iNewType := 0;
+	            "DB_MES"."IO van FB_ControlRecipes".iNewAantal := 0;
+	        END_IF;
+	    END_IF;
+	 
+	END_REGION
+	
+	REGION Remove
+	    
+	    //een recept verwijderen
+	    IF #sRemoveRecipe THEN
+	        //alle recepten een plaats opschuiven
+	        FOR #i2 := (#iRecipeToBeRemoved -1) TO 3 DO
+	            "DB_Recipes".Recipes[#i2] := "DB_Recipes".Recipes[#i2 + 1];
+	        END_FOR;
+	        //allerlaatste recept leegmaken en #iRecipeToBeRemoved resetten
+	        "DB_Recipes".Recipes[4].Type := 0;
+	        "DB_Recipes".Recipes[4].Aantal := 0;
+	        "DB_Recipes".Recipes[4].Progress := 0;
+	        "DB_MES"."IO van FB_ControlRecipes".iRecipeToBeRemoved := 0;
+	    END_IF;
+	    
+	    //het eerste recept verwijderen als deze uitgevoerd is
+	    IF #sFirstRecipeFinished THEN
+	        "DB_Recipes".Recipes[0] := "DB_Recipes".Recipes[1];
+	        "DB_Recipes".Recipes[1] := "DB_Recipes".Recipes[2];
+	        "DB_Recipes".Recipes[2] := "DB_Recipes".Recipes[3];
+	        "DB_Recipes".Recipes[3] := "DB_Recipes".Recipes[4];
+	        "DB_Recipes".Recipes[4].Type := 0;
+	        "DB_Recipes".Recipes[4].Aantal := 0;
+	        "DB_Recipes".Recipes[4].Progress := 0;
+	    END_IF;
+	   
+	END_REGION
+END_FUNCTION_BLOCK
+

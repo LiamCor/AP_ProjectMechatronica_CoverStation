@@ -1,0 +1,15 @@
+﻿DATA_BLOCK "ID_GET_fromTransferPLC"
+{InstructionName := 'GET';
+ LibVersion := '1.3';
+ S7_Optimized_Access := 'TRUE' }
+AUTHOR : SIMATIC
+FAMILY : COM_FUNC
+NAME : GET
+VERSION : 1.1
+NON_RETAIN
+GET
+
+BEGIN
+
+END_DATA_BLOCK
+

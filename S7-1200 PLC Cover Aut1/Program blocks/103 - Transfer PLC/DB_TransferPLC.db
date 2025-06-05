@@ -1,0 +1,15 @@
+﻿DATA_BLOCK "DB_TransferPLC"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      Watchdog : Int;   // value between 0 and 20000 that counts up every second
+      CarrierReady : Bool;   // inidcates if the carrier is in place and ready to recieve a cover
+      ItemPlaced : Bool;   // indicates if the cover station has placed the cover on the carrier
+   END_VAR
+
+
+BEGIN
+
+END_DATA_BLOCK
+

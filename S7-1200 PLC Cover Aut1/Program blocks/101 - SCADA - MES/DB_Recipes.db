@@ -1,0 +1,13 @@
+﻿DATA_BLOCK "DB_Recipes"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+NON_RETAIN
+   STRUCT 
+      Recipes { S7_SetPoint := 'False'} : Array[0..4] of "UDT_Recipe";
+   END_STRUCT;
+
+
+BEGIN
+
+END_DATA_BLOCK
+

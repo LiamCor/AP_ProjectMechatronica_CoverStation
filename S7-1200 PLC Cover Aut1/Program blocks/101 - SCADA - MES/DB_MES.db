@@ -1,0 +1,40 @@
+﻿DATA_BLOCK "DB_MES"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+NON_RETAIN
+   STRUCT 
+      "IO van FB_ControlRecipes" : Struct
+         iNewRecipe : Bool;
+         iNewType : Int;
+         iNewAantal : Int;
+         iRemoveRecipe : Bool;
+         iRecipeToBeRemoved : Int;
+         iReceptKlaar : Bool;
+         oFull : Bool;
+         oEmpty : Bool;
+      END_STRUCT;
+      Algemeen : Struct
+         mReceptGestart : Bool;
+         mReceptActief : Bool;
+         mInstallatieGestart : Bool;
+         mWatchdogPLC : Int;
+         mAlmActive : Bool;
+      END_STRUCT;
+      Alarmen : Struct
+         mAlmGlobal : Bool;
+         mAlmEmergencyStop : Bool;
+         mAlmAirPressureLow : Bool;
+         mAlmMaterialLow : Bool;
+         mAlmVacuum : Bool;
+      END_STRUCT;
+      Merkers : Struct
+         mMerkerSR1 : Bool;
+         mMerkerSR2 : Bool;
+      END_STRUCT;
+   END_STRUCT;
+
+
+BEGIN
+
+END_DATA_BLOCK
+

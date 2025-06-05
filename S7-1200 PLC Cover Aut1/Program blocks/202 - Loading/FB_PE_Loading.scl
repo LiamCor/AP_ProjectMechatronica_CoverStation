@@ -1,0 +1,136 @@
+﻿FUNCTION_BLOCK "FB_PE_Loading"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_Init : Bool;
+      i_Enable : Bool;
+      i_CmdPlaceCoverOnPlate : Bool;
+      i_FeedingReady : Bool;
+      iSenDown : Bool;
+      iSenUp : Bool;
+      iSenPick : Bool;
+      iSenPlace : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      o_ReadyToPlace : Bool;
+      oCilDown : Bool;
+      oCilPlace : Bool;
+      oGrip : Bool;
+   END_VAR
+
+   VAR 
+      sStep : Int;
+      sInit : Bool;
+      sTON_X1 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X2 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X3 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X4 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X5 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X6 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+   END_VAR
+
+   VAR CONSTANT 
+      c_time : Time := T#0.5s;
+   END_VAR
+
+
+BEGIN
+	REGION init
+	    IF #i_Init AND NOT (#sInit = #i_Init) THEN
+	        #sStep := 0;
+	    END_IF;
+	    #sInit := #i_Init;
+	END_REGION
+	
+	REGION Enable
+	    IF NOT #i_Enable THEN
+	        GOTO afterGrafcetLogic;
+	    END_IF;
+	END_REGION
+	
+	REGION Timers
+	    
+	    #sTON_X1(
+	        IN:= #sStep = 1 AND #iSenDown,
+	        PT:=#c_time
+	    );
+	    
+	    #sTON_X2(
+	        IN:= #sStep = 2,
+	        PT:= #c_time
+	    );
+	    
+	    #sTON_X3(
+	        IN:= #sStep = 3 AND #iSenUp,
+	        PT:= #c_time
+	    );
+	    
+	    #sTON_X4(
+	        IN:= #sStep = 4 AND #iSenPlace,
+	        PT:= #c_time
+	    );
+	    
+	    #sTON_X5(
+	        IN:= #sStep = 5 AND #iSenDown,
+	        PT:= #c_time
+	    );
+	    
+	    #sTON_X6(
+	        IN:= #sStep = 6,
+	        PT:= #c_time
+	    );
+	    
+	END_REGION
+	
+	REGION Grafcet logic
+	    CASE #sStep OF
+	        0:
+	            IF #i_FeedingReady AND #iSenPick  AND #i_CmdPlaceCoverOnPlate AND #iSenUp THEN
+	                #sStep := 1;
+	            END_IF;
+	        1:
+	            IF #sTON_X1.Q THEN
+	                #sStep := 2;
+	            END_IF;
+	        2:
+	            IF #sTON_X2.Q THEN
+	                #sStep := 3;
+	            END_IF;
+	        3:
+	            IF #sTON_X3.Q THEN
+	                #sStep := 4;
+	            END_IF;
+	        4:
+	            IF #sTON_X4.Q THEN
+	                #sStep := 5;
+	            END_IF;
+	        5:
+	            IF #sTON_X5.Q THEN
+	                #sStep := 6;
+	            END_IF;
+	        6:
+	            IF #sTON_X6.Q THEN
+	                #sStep := 7;
+	            END_IF;
+	        7:
+	            IF #iSenUp THEN
+	                #sStep := 0;
+	            END_IF;
+	        ELSE  // Statement section ELSE
+	            #sStep := 0;
+	    END_CASE;
+	END_REGION
+	
+	afterGrafcetLogic: // Jump destination
+	
+	REGION Outputs
+	    
+	    #o_ReadyToPlace := #sStep = 0;
+	    #oCilDown := #sStep = 1 OR #sStep = 2 OR #sStep = 5 OR #sStep = 6;
+	    #oCilPlace := #sStep = 4 OR #sStep = 5 OR #sStep = 6 OR #sStep = 7;
+	    #oGrip := #sStep = 2 OR #sStep = 3 OR #sStep = 4 OR #sStep = 5;
+	    
+	END_REGION
+END_FUNCTION_BLOCK
+

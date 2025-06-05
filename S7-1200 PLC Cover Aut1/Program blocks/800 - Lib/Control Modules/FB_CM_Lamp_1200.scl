@@ -1,0 +1,106 @@
+﻿FUNCTION_BLOCK "FB_CM_Lamp_1200"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      iContinu : Bool;
+      iFlash : Bool;
+      iSetting_Flash_Dutycycle : USInt;   // Duty cycle in %
+      iSetting_Flash_Period : Real;   // Periode in seconden
+      iShiftingLight { S7_HiddenAssignment := 'Hide'} : Bool;   // Looplicht
+      iSetting_ShiftInterval { S7_HiddenAssignment := 'Hide'} : Real;   // Tijd tussen de opschuivende bits
+   END_VAR
+
+   VAR_OUTPUT 
+      oLmp : Bool;
+      oShiftingLight { S7_HiddenAssignment := 'Hide'} : Byte;
+   END_VAR
+
+   VAR 
+      R_Trig_StartFlash {InstructionName := 'R_TRIG'; LibVersion := '1.0'} : R_TRIG;
+      Timer_Flash_LmpOff {InstructionName := 'TP_TIME'; LibVersion := '1.0'} : TP_TIME;
+      F_TRIG_Flash_LmpOff {InstructionName := 'F_TRIG'; LibVersion := '1.0'} : F_TRIG;
+      Timer_Flash_LmpOn {InstructionName := 'TP_TIME'; LibVersion := '1.0'} : TP_TIME;
+      F_TRIG_Flash_LmpOn {InstructionName := 'F_TRIG'; LibVersion := '1.0'} : F_TRIG;
+      F_Edge_FlashLmpOff { S7_SetPoint := 'True'} : Bool;
+      R_Edge_StartFlash : Bool;
+      F_Edge_FlashLmpOn : Bool;
+      CalcTime_FlashLmpOff : Time;
+      CalcTime_FlashLmpOn : Time;
+      R_Trig_StartShifting {InstructionName := 'R_TRIG'; LibVersion := '1.0'} : R_TRIG;
+      Timer_ShiftingLight {InstructionName := 'TP_TIME'; LibVersion := '1.0'} : TP_TIME;
+      F_TRIG_ShiftingLightOff {InstructionName := 'F_TRIG'; LibVersion := '1.0'} : F_TRIG;
+      R_Edge_ShiftingLight { S7_SetPoint := 'True'} : Bool;
+      F_Edge_TimerShiftingLight { S7_SetPoint := 'True'} : Bool;
+      ShiftingLight : Byte;
+   END_VAR
+
+
+BEGIN
+	
+	REGION Flashing
+	    // Stijgende flank om flashsignaal te activeren
+	    #R_Trig_StartFlash(CLK := #iFlash,
+	                       Q => #R_Edge_StartFlash);
+	    // Tijd dat de lamp uit moet staan binnen een periode
+	    #Timer_Flash_LmpOff(IN := #R_Edge_StartFlash OR #F_Edge_FlashLmpOn,
+	                        PT := #CalcTime_FlashLmpOff);
+	    // Dalende flank van deze gedoofde tijd
+	    #F_TRIG_Flash_LmpOff(CLK := #Timer_Flash_LmpOff.Q,
+	                         Q => #F_Edge_FlashLmpOff);
+	    // Tijd dat de lamp aan moet staan binnen een periode
+	    #Timer_Flash_LmpOn(IN := #R_Edge_StartFlash OR (#F_Edge_FlashLmpOff AND #iFlash),
+	                       PT := #CalcTime_FlashLmpOn);
+	    // Dalende flank van deze gedoofde tijd
+	    #F_TRIG_Flash_LmpOn(CLK := #Timer_Flash_LmpOn.Q,
+	                        Q => #F_Edge_FlashLmpOn);
+	    
+	    // Berekende tijd dat de lamp uit en aan moet staan binnen een periode
+	    #CalcTime_FlashLmpOn := DINT_TO_TIME(REAL_TO_DINT((USINT_TO_REAL(#iSetting_Flash_Dutycycle) / 100.0 * #iSetting_Flash_Period) * 1000.0));
+	    #CalcTime_FlashLmpOff :=DINT_TO_TIME(REAL_TO_DINT(#iSetting_Flash_Period * 1000.0)) - #CalcTime_FlashLmpOn;
+	    
+	    // Bij het uitzetten van iLmpFlash gaan we de timers resetten zodat het flashsignaal onmiddellijk dooft zonder zijn periode af te maken
+	    IF NOT #iFlash
+	    THEN
+	        RESET_TIMER(#Timer_Flash_LmpOff);
+	        RESET_TIMER(#Timer_Flash_LmpOn);
+	    END_IF;
+	END_REGION
+	
+	REGION Lamp
+	    // Lamp continu of knipperend sturen
+	    IF #iContinu
+	    THEN
+	        #oLmp := TRUE;
+	    ELSE
+	        #oLmp := #Timer_Flash_LmpOn.Q;
+	    END_IF;
+	END_REGION
+	
+	REGION ShiftingLight
+	    // Stijgende flank om het looplicht te activeren
+	    #R_Trig_StartShifting(CLK := #iShiftingLight,
+	                         Q => #R_Edge_ShiftingLight);
+	    // Dalende flank van timer die gebruikt wordt voor het looplicht
+	    #F_TRIG_ShiftingLightOff(CLK:=#Timer_ShiftingLight.Q,
+	                            Q=>#F_Edge_TimerShiftingLight);
+	    // Tijd voor het opschuiven van het looplicht
+	    #Timer_ShiftingLight(IN := #R_Edge_ShiftingLight OR #F_Edge_TimerShiftingLight,
+	                        PT := DINT_TO_TIME(REAL_TO_DINT(#iSetting_ShiftInterval * 1000.0 )));
+	    IF NOT #iShiftingLight
+	    THEN
+	        // Looplicht uit
+	        #ShiftingLight := 0;
+	    ELSIF #R_Edge_ShiftingLight 
+	    THEN
+	        // Set MSB van het looplicht
+	        #ShiftingLight.%X7 := TRUE;
+	    ELSIF #iShiftingLight AND #F_Edge_TimerShiftingLight
+	    THEN
+	        // Looplicht opschuiven
+	        #ShiftingLight := ROR(IN := #ShiftingLight, N := 1);
+	    END_IF;
+	    #oShiftingLight := #ShiftingLight;
+	END_REGION
+	
+END_FUNCTION_BLOCK
+

@@ -1,0 +1,10 @@
+﻿DATA_BLOCK "ID_CM_Lamp_Alarm_H1"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+"FB_CM_Lamp_1200"
+
+BEGIN
+
+END_DATA_BLOCK
+

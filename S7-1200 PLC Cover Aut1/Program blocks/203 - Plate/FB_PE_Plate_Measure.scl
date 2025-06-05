@@ -1,0 +1,112 @@
+﻿FUNCTION_BLOCK "FB_PE_Plate_Measure"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_Init : Bool;
+      iEnable : Bool;
+      iCmdMeasure : Bool;
+      i_int_currentRecipe : Int;
+      i_int_SenHeight : Int;
+      iSenInductive : Bool;
+      iSenPresence : Bool;
+      iSenNotBlack : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      o_ReadyToMeasure : Bool;
+      o_Metallic : Bool;
+      o_propertyNotBlack : Bool;
+      o_present : Bool;
+      oCilMeasure : Bool;
+   END_VAR
+
+   VAR_IN_OUT 
+      IO_completelyMeasuredCover : "UDT_coverProperties";
+   END_VAR
+
+   VAR 
+      sStep : Int;
+      sInit : Bool;
+      s_int_Previous : Int;
+      sTON_X1 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X3 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+   END_VAR
+
+   VAR CONSTANT 
+      c_time_WaitTime : Time := T#0.5s;
+      c_int_MaxMeasureForOk : Int := 1590;
+   END_VAR
+
+
+BEGIN
+	REGION init
+	    IF #i_Init AND NOT (#sInit = #i_Init) THEN
+	        #sStep := 0;
+	    END_IF;
+	    #sInit := #i_Init;
+	END_REGION
+	
+	REGION enable
+	    IF NOT #iEnable THEN
+	        GOTO afterGrafcetLogic;
+	    END_IF;
+	END_REGION
+	
+	REGION timers
+	    
+	    #sTON_X1(IN:= #s_int_Previous = #i_int_SenHeight,
+	             PT:= #c_time_WaitTime);
+	
+	    #sTON_X3(IN:= #i_int_SenHeight < 20,
+	             PT:= #c_time_WaitTime);
+	    
+	END_REGION
+	
+	REGION grafcet logic
+	    CASE #sStep OF
+	        0:
+	            IF #iCmdMeasure THEN
+	                #sStep := 1;
+	            END_IF;
+	        1:
+	            IF #sTON_X1.Q THEN
+	                #sStep := 2;
+	            END_IF;
+	        2:
+	            #sStep := 3;
+	        3:
+	            IF #sTON_X3.Q THEN
+	                #sStep := 0;
+	            END_IF;
+	        ELSE
+	            #sStep := 0;
+	    END_CASE;
+	END_REGION
+	
+	afterGrafcetLogic: // Jump destination
+	
+	REGION outputs
+	    #o_ReadyToMeasure := #sStep = 0;
+	    #oCilMeasure := #sStep = 1;
+	    
+	    IF #sStep = 2 THEN
+	        #o_Metallic := #iSenInductive;
+	        #o_propertyNotBlack := #iSenNotBlack;
+	        #o_present := #iSenPresence;
+	        
+	        IF (#i_int_SenHeight < #"c_int_MaxMeasureForOk") THEN
+	            #IO_completelyMeasuredCover.properties.correctOrientation := TRUE;
+	        ELSE
+	            #IO_completelyMeasuredCover.properties.correctOrientation := FALSE;
+	        END_IF;
+	        
+	        #IO_completelyMeasuredCover.reject := "FC_setRejectBitInCoverProperties"( i_currentCover := #IO_completelyMeasuredCover, i_currentRecipe := #i_int_currentRecipe);
+	    END_IF;
+	END_REGION
+	
+	REGION set static mem
+	    #s_int_Previous := #i_int_SenHeight;
+	END_REGION
+	    
+END_FUNCTION_BLOCK
+

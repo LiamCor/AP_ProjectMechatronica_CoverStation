@@ -1,0 +1,186 @@
+﻿FUNCTION_BLOCK "FB_PE_Transport"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_Init : Bool;
+      i_Enable : Bool;
+      i_CmdTransport : Bool;
+      i_CoverLoadedBit : Bool;
+      iSenCilDown : Bool;
+      iSenCilUp : Bool;
+      iSenCilAtPlate : Bool;
+      iSenCilAtCart : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      o_ReadyToTransport : Bool;
+      o_EmptyTransportedCoverProperties : "UDT_coverProperties";
+      o_ItemPlaced : Bool;
+      oVenCilDown : Bool;
+      oVenCilToCart : Bool;
+      oVenGripClose : Bool;
+   END_VAR
+
+   VAR_IN_OUT 
+      io_CounterDone : Int;
+   END_VAR
+
+   VAR 
+      sStep : Int;
+      sInit : Bool;
+      sPreviuousStep : Int;
+      sTON_X1 {InstructionName := 'TON_TIME'; LibVersion := '1.0'; S7_SetPoint := 'False'} : TON_TIME;
+      sTON_X2 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X3 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X4 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X5 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X6 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X7 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X8 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTP_itemPlaced {InstructionName := 'TP_TIME'; LibVersion := '1.0'} : TP_TIME;
+   END_VAR
+
+   VAR CONSTANT 
+      cWaitTime : Time := T#0.5s;   // With feedback
+   END_VAR
+
+
+BEGIN
+	REGION init
+	    IF #i_Init AND NOT (#sInit = #i_Init) THEN
+	        #sStep := 0;
+	    END_IF;
+	    #sInit := #i_Init;
+	END_REGION
+	
+	REGION enable
+	    IF NOT #i_Enable THEN
+	        GOTO afterGrafcetLogic;
+	    END_IF;
+	END_REGION
+	
+	REGION timers
+	    
+	    #sTON_X1(IN := (#sStep = 1) AND #iSenCilDown,
+	             PT := #cWaitTime);
+	    
+	    #sTON_X2(IN := (#sStep = 2),
+	             PT := #cWaitTime);
+	    
+	    #sTON_X3(IN := (#sStep = 3) AND #iSenCilUp,
+	             PT := #cWaitTime);
+	    
+	    #sTON_X4(IN := (#sStep = 4) AND #iSenCilAtCart,
+	             PT := #cWaitTime);
+	    
+	    #sTON_X5(IN := (#sStep = 5) AND #iSenCilDown,
+	             PT := #cWaitTime);
+	    
+	    #sTON_X6(IN := (#sStep = 6),
+	             PT := #cWaitTime);
+	    
+	    #sTON_X7(IN := (#sStep = 7) AND #iSenCilUp,
+	             PT := #cWaitTime);
+	    
+	    #sTON_X8(IN := (#sStep = 8) AND #iSenCilAtPlate,
+	             PT := #cWaitTime);
+	END_REGION
+	
+	REGION grafcet logic
+	    CASE #sStep OF
+	        0:
+	            IF
+	                #i_CmdTransport
+	                AND #i_CoverLoadedBit
+	            THEN
+	                #sStep := 1;
+	            END_IF;
+	        1:
+	            IF #sTON_X1.Q THEN
+	                #sStep := 2;
+	            END_IF;
+	        2:
+	            IF #sTON_X2.Q THEN
+	                #sStep := 3;
+	            END_IF;
+	        3:
+	            IF #sTON_X3.Q THEN
+	                #sStep := 4;
+	            END_IF;
+	        4:
+	            IF #sTON_X4.Q THEN
+	                #sStep := 5;
+	            END_IF;
+	        5:
+	            IF #sTON_X5.Q THEN
+	                #sStep := 6;
+	            END_IF;
+	        6:
+	            IF #sTON_X6.Q THEN
+	                #sStep := 7;
+	            END_IF;
+	        7:
+	            IF #sTON_X7.Q THEN
+	                #sStep := 8;
+	            END_IF;
+	        8:
+	            IF #sTON_X8.Q THEN
+	                #sStep := 0;
+	            END_IF;
+	        ELSE
+	            #sStep := 0;
+	    END_CASE;
+	END_REGION
+	
+	afterGrafcetLogic: // Jump destination
+	    
+	REGION data management
+	    
+	    REGION empty loaded cover properties
+	        
+	        IF
+	            (#sStep = 3)
+	            AND NOT (#sPreviuousStep = #sStep)
+	        THEN
+	            // Empty picked item in array
+	            #o_EmptyTransportedCoverProperties := "FC_emptyCoverProperties"();
+	            // Add 1 to counter for current recipe
+	            #io_CounterDone := #io_CounterDone + 1;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION item placed pulse
+	        
+	        #sTP_itemPlaced(IN:= (#sStep = 7) AND NOT(#sPreviuousStep = #sStep),
+	                        PT:= T#1.5s,
+	                        Q => #o_ItemPlaced);
+	        
+	    END_REGION
+	    
+	    #sPreviuousStep := #sStep;
+	    
+	END_REGION
+	
+	REGION outputs
+	    
+	    #o_ReadyToTransport := #sStep = 0;
+	    
+	    #oVenCilDown := #sStep = 1
+	                 OR #sStep = 2
+	                 OR #sStep = 5
+	                 OR #sStep = 6;
+	    
+	    #oVenCilToCart := #sStep = 4
+	                   OR #sStep = 5
+	                   OR #sStep = 6
+	                   OR #sStep = 7;
+	    
+	    #oVenGripClose := #sStep = 2
+	                   OR #sStep = 3
+	                   OR #sStep = 4
+	                   OR #sStep = 5;
+	                   
+	END_REGION
+	
+END_FUNCTION_BLOCK
+

@@ -1,0 +1,10 @@
+﻿TYPE "UDT_Recipe"
+VERSION : 0.1
+   STRUCT
+      "Type" : Int;
+      Aantal : Int;
+      Progress : Int;
+   END_STRUCT;
+
+END_TYPE
+

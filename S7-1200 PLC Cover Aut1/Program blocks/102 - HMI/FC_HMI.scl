@@ -1,0 +1,149 @@
+﻿FUNCTION "FC_HMI" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR CONSTANT 
+      TODO : Bool := false;
+   END_VAR
+
+
+BEGIN
+	REGION General
+	    
+	    REGION Read from PLC
+	        "DB_HMI".general.read_fromPLC.Gestart := "DB_Global".general.started;
+	        "DB_HMI".general.read_fromPLC.Gestopt := NOT "DB_Global".general.started; // Nodig?
+	        "DB_HMI".general.read_fromPLC.Storing := "DB_Alarm".general.global;
+	        "DB_HMI".general.read_fromPLC.Auto := NOT "DB_Global".general.man;
+	    END_REGION
+	    
+	    REGION Alarmen
+	        "DB_HMI".general.alarmen.Emergency := "DB_Alarm".general.global; // Dubbel
+	        "DB_HMI".general.alarmen.AirPressure := "DB_Alarm".general.airPressure;
+	    END_REGION
+	    
+	    REGION Write to PLC
+	        // Zie FC_EM_General "DB_HMI".general.write_toPLC.Cmd_Start
+	        // Zie FC_EM_General "DB_HMI".general.write_toPLC.Cmd_Stop
+	        // Zie FC_EM_General "DB_HMI".general.write_toPLC.Cmd_Reset
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION Feeding
+	    
+	    REGION Read from PLC
+	        "DB_HMI".feeding.read_fromPLC.SenLoaded := "DB_IO".feeding.iFeedingSenLoaded;
+	        "DB_HMI".feeding.read_fromPLC.SenCilOut_k1 := "DB_IO".feeding.iFeedingSenCilOut_k1;
+	        "DB_HMI".feeding.read_fromPLC.MagazijnLeeg := "DB_Alarm".feeding.materialLow;
+	    END_REGION
+	    
+	    REGION Alarmen
+	        
+	       
+	        "DB_HMI".feeding.alarmen.MaterialLow := "DB_Alarm".feeding.materialLow; 
+	    END_REGION
+	    
+	    REGION Write to PLC
+	        // Zie FC_EM_Feeding "DB_HMI".feeding.write_toPLC.Man_Out
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION Loading
+	    
+	    REGION Read from PLC
+	        "DB_HMI".loading.read_fromPLC.SenDown_a1 := "DB_IO".loading.iLoadingSenDown;
+	        "DB_HMI".loading.read_fromPLC.SenUp_a0 := "DB_IO".loading.iLoadingSenUp;
+	        "DB_HMI".loading.read_fromPLC.SenAtPick_b0 := "DB_IO".loading.iLoadingSenAtPick;
+	        "DB_HMI".loading.read_fromPLC.SenAtPlace_b1 := "DB_IO".loading.iLoadingSenAtPlace;
+	        "DB_HMI".loading.read_fromPLC.oGrip := "oLoadingVenGrip_C";
+	    END_REGION
+	    
+	    REGION Alarmen
+	        "DB_HMI".loading.alarmen.CilDownTimeout := #TODO;
+	        
+	        "DB_HMI".loading.alarmen.CilPlaceTimeout := #TODO;
+	        
+	    END_REGION
+	    
+	    REGION Write to PLC
+	        // Zie FC_EM_Loading "DB_HMI".loading.write_toPLC.Man_Grip
+	        // Zie FC_EM_Loading "DB_HMI".loading.write_toPLC.Man_Down
+	        // Zie FC_EM_Loading "DB_HMI".loading.write_toPLC.Man_Place
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION Plate
+	    
+	    REGION Read from PLC
+	        "DB_HMI".plate.read_fromPLC.oLock := "oPlateVenCilLocking_E+";
+	        "DB_HMI".plate.read_fromPLC.SenCilPushIn := "DB_IO".plate.iPlateSenCilPushingIn;
+	        "DB_HMI".plate.read_fromPLC.oMeasureDown := "oPlateVenCilMeasuringDown_L+";
+	        
+	    END_REGION
+	    
+	    REGION Alarmen
+	        
+	        "DB_HMI".plate.alarmen.CilMeasureTime := #TODO;
+	       
+	    END_REGION
+	    
+	    REGION Write to PLC
+	        // Zie FC_EM_Plate "DB_HMI".plate.write_toPLC.Man_Measure
+	        // Zie FC_EM_Plate "DB_HMI".plate.write_toPLC.Man_Push
+	        // Zie FC_EM_Plate "DB_HMI".plate.write_toPLC.Man_Lock
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION Reject
+	    
+	    REGION Read from PLC
+	        "DB_HMI".reject.read_fromPLC.SenVacuüm := "DB_IO".reject.iRejectSenVacuum;
+	        "DB_HMI".reject.read_fromPLC.SenOut := "DB_IO".reject.iRejectSenCilOut;
+	        "DB_HMI".reject.read_fromPLC.SenIn := "DB_IO".reject.iRejectSenCilIn;
+	        "DB_HMI".reject.read_fromPLC.SenUp := "DB_IO".reject.iRejectSenCilUp;
+	    END_REGION
+	    
+	    REGION Alarmen
+	        "DB_HMI".reject.alarmen.CilOutTime := #TODO;
+	       
+	        
+	        "DB_HMI".reject.alarmen.Vacuüm := "DB_Alarm".reject.vacuum; // Valid IMO
+	    END_REGION
+	    
+	    REGION Write to PLC
+	        // Zie FC_EM_Reject "DB_HMI".reject.write_toPLC.Man_Out
+	        // Zie FC_EM_Reject "DB_HMI".reject.write_toPLC.Man_Vacuüm
+	        // Zie FC_EM_Reject "DB_HMI".reject.write_toPLC.Man_Down
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION Transport
+	    
+	    REGION Read from PLC
+	        "DB_HMI".transport.read_fromPLC.oGrip := "oTransportVenGripClosed_J+";
+	        "DB_HMI".transport.read_fromPLC.CilUp := "DB_IO".transport.iTransportSenUp;
+	        "DB_HMI".transport.read_fromPLC.CilDown := "DB_IO".transport.iTransportSenDown;
+	        "DB_HMI".transport.read_fromPLC.CilPick := "DB_IO".transport.iTransportSenAtPlate;
+	        "DB_HMI".transport.read_fromPLC.CilPlace := "DB_IO".transport.iTransportSenAtCart;
+	    END_REGION
+	    
+	    REGION Alarmen
+	        "DB_HMI".transport.alarmen.CilDownTime := #TODO;
+	        
+	        "DB_HMI".transport.alarmen.CilPlaceTime := #TODO;
+	       
+	    END_REGION
+	    
+	    REGION Write to PLC
+	        // Zie FC_EM_Transport "DB_HMI".transport.write_toPLC.Man_Grip
+	        // Zie FC_EM_Transport "DB_HMI".transport.write_toPLC.Man_Down
+	        // Zie FC_EM_Transport "DB_HMI".transport.write_toPLC.Man_Place
+	    END_REGION
+	    
+	END_REGION
+END_FUNCTION
+

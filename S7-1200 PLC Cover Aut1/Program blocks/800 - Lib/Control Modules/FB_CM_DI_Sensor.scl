@@ -1,0 +1,48 @@
+﻿FUNCTION_BLOCK "FB_CM_DI_Sensor"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+   VAR_INPUT 
+      iSen { S7_HiddenAssignment := 'Show'} : Bool;   // Sensor input signal
+      iSetting_TON : Time;   // On-delay time for oSen_TO
+      iSetting_TOF : Time;   // Off-delay time for oSen_TO
+      iSetting_Alm_En { S7_HiddenAssignment := 'Hide'} : Bool;   // Activate alarm functionality
+      iCmd_Reset_Alm { S7_HiddenAssignment := 'Hide'} : Bool;   // Command to reset the alarm
+   END_VAR
+
+   VAR_OUTPUT 
+      oSen_TON_TOF : Bool;   // Sensor with delays signal
+      oAlm { S7_HiddenAssignment := 'Hide'} : Bool;   // Alarm sensor actived
+   END_VAR
+
+   VAR 
+      sAlm : Bool;   // Alarm sensor actived retain > compliant Machine Directive 2006/42/EG
+      sTON_Sen {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTOF_Sen {InstructionName := 'TOF_TIME'; LibVersion := '1.0'} : TOF_TIME;
+   END_VAR
+
+
+BEGIN
+	REGION Sensor 
+	    //Optional delays on sensor
+	    #sTON_Sen(IN := #iSen,
+	          PT := #iSetting_TON);
+	    #sTOF_Sen(IN:=#sTON_Sen.Q,
+	          PT:=#iSetting_TOF);
+	    //Output result
+	    #oSen_TON_TOF:= #sTOF_Sen.Q;
+	END_REGION
+	
+	REGION Alarm  
+	    //Sensor alarm circuit
+	    IF #iCmd_Reset_Alm THEN
+	        #sAlm := FALSE;
+	    END_IF;
+	    //Cause after reset = Priority on cause > compliant Machine Directive 2006/42/EG
+	    IF #iSetting_Alm_En AND #sTON_Sen.Q THEN
+	        #sAlm := TRUE;
+	    END_IF;
+	    //Output result
+	    #oAlm := #sAlm;
+	END_REGION ;
+END_FUNCTION_BLOCK
+

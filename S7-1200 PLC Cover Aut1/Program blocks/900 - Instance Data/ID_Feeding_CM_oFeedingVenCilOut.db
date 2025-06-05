@@ -1,0 +1,10 @@
+﻿DATA_BLOCK "ID_Feeding_CM_oFeedingVenCilOut"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+NON_RETAIN
+"FB_CM_Cilinder"
+
+BEGIN
+
+END_DATA_BLOCK
+

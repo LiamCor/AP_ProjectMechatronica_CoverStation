@@ -1,0 +1,14 @@
+﻿TYPE "UDT_coverProperties"
+VERSION : 0.1
+   STRUCT
+      loaded : Bool;   // Indicates that there is an item in the current location
+      reject : Bool;   // Indicates that the current item is to be rejected
+      properties : Struct
+         metallic : Bool;   // Indicates that the current item is metallic
+         notBlack : Bool;   // Indicates that the current item is not black
+         correctOrientation : Bool;   // Indicates that the current item has the correct orientation
+      END_STRUCT;
+   END_STRUCT;
+
+END_TYPE
+

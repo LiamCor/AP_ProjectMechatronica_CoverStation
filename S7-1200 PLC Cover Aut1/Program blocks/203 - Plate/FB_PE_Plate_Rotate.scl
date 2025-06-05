@@ -1,0 +1,118 @@
+﻿FUNCTION_BLOCK "FB_PE_Plate_Rotate"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_Init : Bool;
+      i_Enable : Bool;
+      i_CmdRotate : Bool;
+      iSenCilPushingIn : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      o_ReadyToRotate : Bool;
+      oCilLock : Bool;
+      oCilPush : Bool;
+   END_VAR
+
+   VAR_IN_OUT 
+      io_currentCovers : Array[0..7] of "UDT_coverProperties";
+   END_VAR
+
+   VAR 
+      sStep : Int;
+      sInit : Bool;
+      sTON_X1 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X2 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X3 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+   END_VAR
+
+   VAR_TEMP 
+      x_currentCovers : Array[0..7] of "UDT_coverProperties";
+      x_lastCover : "UDT_coverProperties";
+      i : Int;
+   END_VAR
+
+   VAR CONSTANT 
+      c_time : Time := T#0.5s;
+   END_VAR
+
+
+BEGIN
+	REGION init
+	    IF #i_Init AND NOT (#sInit = #i_Init) THEN
+	        #sStep := 0;
+	    END_IF;
+	    #sInit := #i_Init;
+	END_REGION
+	
+	REGION enable
+	    IF NOT #i_Enable THEN
+	        GOTO afterGrafcetLogic;
+	    END_IF;
+	END_REGION
+	
+	REGION timers
+	    #sTON_X1(IN := #sStep = 1,
+	                  PT := #c_time);
+	    
+	    #sTON_X2(IN := #sStep = 2,
+	                  PT := #c_time);
+	    
+	    #sTON_X3(IN := #sStep = 3,
+	                  PT := #c_time);
+	END_REGION
+	
+	REGION grafcet logic
+	    CASE #sStep OF
+	        0:
+	            IF #i_CmdRotate AND #iSenCilPushingIn THEN
+	                #sStep := 1;
+	            END_IF;
+	        1:
+	            IF #sTON_X1.Q THEN
+	                #sStep := 2;
+	            END_IF;
+	        2:
+	            IF #sTON_X2.Q THEN
+	                #sStep := 3;
+	            END_IF;
+	        3:
+	            #sStep := 4;
+	        4:
+	            IF #sTON_X3.Q THEN
+	                #sStep := 0;
+	            END_IF;
+	        ELSE
+	            #sStep := 0;
+	    END_CASE;
+	END_REGION
+	
+	afterGrafcetLogic: // Jump destination
+	
+	REGION rotate array
+	    
+	    IF #sStep = 3 THEN
+	        #x_currentCovers := #io_currentCovers; // Write to temp
+	        #x_lastCover := #x_currentCovers[7]; // Save last in temp
+	        
+	        FOR #i := 7 TO 1 BY -1 DO
+	            // Rotate array
+	            #x_currentCovers[#i] := #x_currentCovers[#i - 1];
+	        END_FOR;
+	        #x_currentCovers[0] := #x_lastCover; // Set first to last in temp
+	        
+	        #io_currentCovers := #x_currentCovers; // Output
+	    END_IF;
+	    
+	END_REGION
+	
+	REGION outputs
+	    
+	    #o_ReadyToRotate := #sStep = 0;
+	    #oCilLock := #sStep = 1 OR #sStep = 2;
+	    #oCilPush := #sStep = 2 OR #sStep = 3;
+	    
+	END_REGION
+	    
+END_FUNCTION_BLOCK
+

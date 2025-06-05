@@ -1,0 +1,114 @@
+﻿DATA_BLOCK "DB_HMI"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      general : Struct
+         read_fromPLC : Struct
+            Gestart : Bool;
+            Gestopt : Bool;
+            Storing : Bool;
+            Man : Bool;
+            Auto : Bool;
+         END_STRUCT;
+         alarmen : Struct
+            Emergency : Bool;
+            AirPressure : Bool;
+         END_STRUCT;
+         write_toPLC : Struct
+            Cmd_Start : Bool;   // Om te sturen in Auto
+            Cmd_Stop : Bool;   // Om te sturen in Auto
+            Cmd_Reset : Bool;   // Om te sturen in Auto
+            Cmd_Init : Bool;
+         END_STRUCT;
+      END_STRUCT;
+      feeding : Struct
+         read_fromPLC : Struct
+            SenLoaded : Bool;
+            SenCilOut_k1 : Bool;
+            MagazijnLeeg : Bool;
+         END_STRUCT;
+         alarmen : Struct
+            MaterialLow : Bool;
+         END_STRUCT;
+         write_toPLC : Struct
+            Man_Out : Bool;
+         END_STRUCT;
+      END_STRUCT;
+      loading : Struct
+         read_fromPLC : Struct
+            SenDown_a1 : Bool;
+            SenUp_a0 : Bool;
+            SenAtPick_b0 : Bool;
+            SenAtPlace_b1 : Bool;
+            oGrip : Bool;   // Inlezen om weer te geven wat deze doet
+         END_STRUCT;
+         alarmen : Struct
+            CilDownTimeout : Bool;
+            CilPlaceTimeout : Bool;
+         END_STRUCT;
+         write_toPLC : Struct
+            Man_Grip : Bool;
+            Man_Down : Bool;
+            Man_Place : Bool;
+         END_STRUCT;
+      END_STRUCT;
+      plate : Struct
+         read_fromPLC : Struct
+            oLock : Bool;   // Inlezen om weer te geven wat deze doet
+            SenCilPushIn : Bool;   // cylinder terug (not pushed) true
+            oMeasureDown : Bool;   // cylinder uit Measure
+            MeasureDownNOK : Bool;   // Berekend
+            MeasureDownOK : Bool;   // Berekend
+         END_STRUCT;
+         alarmen : Struct
+            CilMeasureTime : Bool;
+         END_STRUCT;
+         write_toPLC : Struct
+            Man_Measure : Bool;
+            Man_Push : Bool;
+            Man_Lock : Bool;
+         END_STRUCT;
+      END_STRUCT;
+      reject : Struct
+         read_fromPLC : Struct
+            SenVacuüm : Bool;
+            SenOut : Bool;
+            SenIn : Bool;
+            SenUp : Bool;
+         END_STRUCT;
+         alarmen : Struct
+            CilOutTime : Bool;
+            Vacuüm : Bool;
+         END_STRUCT;
+         write_toPLC : Struct
+            Man_Out : Bool;
+            Man_Vacuüm : Bool;
+            Man_Down : Bool;
+         END_STRUCT;
+      END_STRUCT;
+      transport : Struct
+         read_fromPLC : Struct
+            oGrip : Bool;   // inlezen om weer te geven wat deze doet
+            CilUp : Bool;
+            CilDown : Bool;
+            CilPick : Bool;
+            CilPlace : Bool;
+         END_STRUCT;
+         alarmen : Struct
+            CilDownTime : Bool;
+            CilPlaceTime : Bool;
+         END_STRUCT;
+         write_toPLC : Struct
+            Man_Grip : Bool;
+            Man_Down : Bool;
+            Man_Place : Bool;
+         END_STRUCT;
+      END_STRUCT;
+   END_VAR
+
+
+BEGIN
+
+END_DATA_BLOCK
+

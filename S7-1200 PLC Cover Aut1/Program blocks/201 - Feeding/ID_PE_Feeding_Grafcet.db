@@ -1,0 +1,10 @@
+﻿DATA_BLOCK "ID_PE_Feeding_Grafcet"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+"FB_PE_Feeding_Grafcet"
+
+BEGIN
+
+END_DATA_BLOCK
+

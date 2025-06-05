@@ -1,0 +1,191 @@
+﻿FUNCTION_BLOCK "FB_PE_Reject"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_Init : Bool;
+      i_Enable : Bool;
+      i_CmdReject : Bool;
+      i_CoverRejectBit : Bool;
+      iSenCilIn : Bool;
+      iSenCilOut : Bool;
+      iSenCilUp : Bool;
+      iSenVacuum : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      o_ReadyToReject : Bool;
+      o_EmptyRejectedCoverProperties : "UDT_coverProperties";
+      o_AlmVacuum : Bool;   // Indicates that the item fell during reject proces
+      oVenCilOut : Bool;   // Bistable
+      oVenCilIn : Bool;   // Bistable
+      oVenCilDown : Bool;
+      oVenVacuum : Bool;
+   END_VAR
+
+   VAR 
+      sStep : Int;
+      sInit : Bool;
+      sPreviuousStep : Int;
+      sTON_X1 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X2 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X3 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X4 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X5 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X6 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X7 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X8 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+      sTON_X9 {InstructionName := 'TON_TIME'; LibVersion := '1.0'} : TON_TIME;
+   END_VAR
+
+   VAR CONSTANT 
+      cShortWaitTime : Time := T#0.5s;   // With feedback
+      cLongWaitTime : Time := T#1.5s;   // Without feedback
+      cPulseWaitTime : Time := T#100ms;   // Pulse for bistable valve
+   END_VAR
+
+
+BEGIN
+	REGION init
+	    IF #i_Init AND NOT (#sInit = #i_Init) THEN
+	        #sStep := 0;
+	    END_IF;
+	    #sInit := #i_Init;
+	END_REGION
+	
+	REGION enable
+	    IF NOT #i_Enable THEN
+	        GOTO afterGrafcetLogic;
+	    END_IF;
+	END_REGION
+	
+	REGION timers
+	    
+	    #sTON_X1(IN := #sStep = 1,
+	             PT := #cPulseWaitTime);
+	    
+	    #sTON_X2(IN := (#sStep = 2) AND #iSenCilOut ,
+	             PT := #cShortWaitTime);
+	    
+	    #sTON_X3(IN := (#sStep = 3) AND NOT #iSenCilOut,
+	             PT := #cLongWaitTime);
+	    
+	    #sTON_X4(IN := (#sStep = 4) AND #iSenVacuum,
+	             PT := #cShortWaitTime);
+	    
+	    #sTON_X5(IN := (#sStep = 5) AND #iSenCilUp,
+	             PT := #cShortWaitTime);
+	    
+	    #sTON_X6(IN := (#sStep = 6),
+	             PT := #cPulseWaitTime);
+	    
+	    #sTON_X7(IN := (#sStep = 7) AND #iSenCilIn,
+	             PT := #cShortWaitTime);
+	    
+	    #sTON_X8(IN := (#sStep = 8) AND NOT #iSenCilUp,
+	             PT := #cLongWaitTime);
+	    
+	    #sTON_X9(IN:= #sStep = 9,
+	             PT:= #cShortWaitTime);
+	    
+	END_REGION
+	
+	REGION grafcet logic
+	    CASE #sStep OF
+	        0:
+	            IF
+	                #i_CmdReject
+	                AND #i_CoverRejectBit
+	                AND #iSenCilIn
+	                AND #iSenCilUp
+	            THEN
+	                #sStep := 1;
+	            END_IF;
+	        1:
+	            IF #sTON_X1.Q THEN
+	                #sStep := 2;
+	            END_IF;
+	        2:
+	            IF #sTON_X2.Q THEN
+	                #sStep := 3;
+	            END_IF;
+	        3:
+	            IF #sTON_X3.Q THEN
+	                #sStep := 4;
+	            END_IF;
+	        4:
+	            IF #sTON_X4.Q THEN
+	                #sStep := 5;
+	            END_IF;
+	        5:
+	            IF #sTON_X5.Q THEN
+	                #sStep := 6;
+	            END_IF;
+	        6:
+	            IF #sTON_X6.Q THEN
+	                #sStep := 7;
+	            END_IF;
+	        7:
+	            IF #sTON_X7.Q THEN
+	                #sStep := 8;
+	            END_IF;
+	        8:
+	            IF #sTON_X8.Q THEN
+	                #sStep := 9;
+	            END_IF;
+	        9:
+	            IF #sTON_X9.Q THEN
+	                #sStep := 0;
+	            END_IF;
+	        ELSE
+	            #sStep := 0;
+	    END_CASE;
+	END_REGION
+	
+	afterGrafcetLogic: // Jump destination
+	
+	REGION empty rejected cover properties
+	    
+	    IF
+	        (#sStep = 7)
+	        AND NOT (#sPreviuousStep = #sStep)
+	    THEN
+	        #o_EmptyRejectedCoverProperties := "FC_emptyCoverProperties"();
+	    END_IF;
+	    
+	    #sPreviuousStep := #sStep;
+	    
+	END_REGION
+	
+	REGION alarm item fell during reject
+	    
+	    IF #sStep >= 5 AND #sStep <= 8 AND NOT #iSenVacuum THEN
+	        #o_AlmVacuum := TRUE;
+	    ELSE
+	        #o_AlmVacuum := FALSE;
+	    END_IF;
+	    
+	END_REGION
+	
+	REGION outputs
+	    
+	    #o_ReadyToReject := #sStep = 0;
+	    
+	    #oVenCilOut      := #sStep = 1;
+	    
+	    #oVenCilIn       := #sStep = 6;
+	    
+	    #oVenCilDown     := #sStep = 3
+	                     OR #sStep = 4
+	                     OR #sStep = 8
+	                     OR #sStep = 9;
+	                     
+	    #oVenVacuum      := #sStep = 4
+	                     OR #sStep = 5
+	                     OR #sStep = 6
+	                     OR #sStep = 7
+	                     OR #sStep = 8;
+	                     
+	END_REGION
+	
+END_FUNCTION_BLOCK
+

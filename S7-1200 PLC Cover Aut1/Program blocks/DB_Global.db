@@ -1,0 +1,52 @@
+﻿DATA_BLOCK "DB_Global"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      com : Struct   // Communication state object
+         WD : Int;   // Watchdog mem for S7 communication with Transfer PLC
+      END_STRUCT;
+      general : Struct   // General state object
+         startup : Bool;   // Indicates "startup" mode
+         started : Bool;   // Indicates "started" mode
+         man : Bool;   // Indicates "manual" mode
+         resetSignal : Bool;   // Gives the reset signal (1s high)
+         init : Bool;   // Sets the "Global Grafcet" to step 0
+         DEBUG_AlwaysFalse : Bool;   // Used for debugging
+         DEBUG_AlwaysTrue : Bool;   // Used for debugging
+      END_STRUCT;
+      feeding : Struct   // Feeding state object
+         init : Bool;   // Sets the "Feeding Grafcet" to step 0
+         sigReadyToReload : Bool;   // Indicates that "Feeding Grafcet" is ready
+      END_STRUCT;
+      loading : Struct   // Loading state object
+         init : Bool;   // Sets the "Loading Grafcet" to step 0
+         cmdPlaceNewCover : Bool;   // Command to start the "Loading" process
+         sigReadyToPlace : Bool;   // Indicates that "Loading Grafcet" is ready
+      END_STRUCT;
+      plate : Struct   // Loading state object
+         currentCovers { S7_SetPoint := 'False'} : Array[0..7] of "UDT_coverProperties";   // Array with all the data for the locations on the plate
+         init_rotate : Bool;   // Sets the "Rotate Grafcet" to step 0
+         cmdRotate : Bool;   // Command to start the "Rotate" process
+         sigReadyToRotate : Bool;   // Indicates that "Rotate Grafcet" is ready
+         init_measure : Bool;   // Sets the "Measure Grafcet" to step 0
+         cmdMeasure : Bool;   // Command to start the "Measure" process
+         sigReadyToMeasure : Bool;   // Indicates that "Measure Grafcet" is ready
+      END_STRUCT;
+      reject : Struct   // Reject state object
+         init : Bool;   // Sets the "Reject Grafcet" to step 0
+         cmdReject : Bool;   // Command to start the "Reject" process
+         sigReadyToReject : Bool;   // Indicates that "Reject Grafcet" is ready
+      END_STRUCT;
+      transport : Struct   // Transport state object
+         init : Bool;   // Sets the "Transport Grafcet" to step 0
+         cmdTransport : Bool;   // Command to start the "Transport" process
+         sigReadyToTransport : Bool;   // Indicates that "Transport Grafcet" is ready
+      END_STRUCT;
+   END_VAR
+
+
+BEGIN
+
+END_DATA_BLOCK
+

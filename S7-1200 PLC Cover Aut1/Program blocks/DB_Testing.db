@@ -1,0 +1,82 @@
+﻿DATA_BLOCK "DB_Testing"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      enable : Struct
+         TransferPLC : Bool;   // Enables or disables the entire FB for testing purposes only
+         GlobalGrafcet : Bool;   // Enables or disables the entire FB for testing purposes only
+         Feeding : Bool;   // Enables or disables the entire FB for testing purposes only
+         Loading : Bool;   // Enables or disables the entire FB for testing purposes only
+         Rotate : Bool;   // Enables or disables the entire FB for testing purposes only
+         Measure : Bool;   // Enables or disables the entire FB for testing purposes only
+         Reject : Bool;   // Enables or disables the entire FB for testing purposes only
+         Transport : Bool;   // Enables or disables the entire FB for testing purposes only
+      END_STRUCT;
+      init : Struct
+         GlobalGrafcet : Bool;   // Sets current step to 0 (rising edge)
+         Feeding : Bool;   // Sets current step to 0 (rising edge)
+         Loading : Bool;   // Sets current step to 0 (rising edge)
+         Rotate : Bool;   // Sets current step to 0 (rising edge)
+         Measure : Bool;   // Sets current step to 0 (rising edge)
+         Reject : Bool;   // Sets current step to 0 (rising edge)
+         Transport : Bool;   // Sets current step to 0 (rising edge)
+      END_STRUCT;
+      value : Struct
+         RecipeType : Int;   // Emulates current recipe to be 1 or 2 for testing purposes only
+         RejectBit : Bool;   // Emulates that the current cover needs to be rejected
+         CoverLoaded : Bool;   // Emulates that the location is loaded
+      END_STRUCT;
+      signal : Struct
+         Transfer_CarrierReady : Bool;   // Emulates "carrierReady" signal from transfer PLC for testing purposes only
+         Feeding_ReadyToReload : Bool;
+         Loading_ReadyToPlace : Bool;
+         Plate_ReadyToRotate : Bool;
+         Plate_ReadyToMeasure : Bool;
+         Reject_ReadyToReject : Bool;
+         Transport_ReadyToTransport : Bool;
+      END_STRUCT;
+      cmd : Struct
+         Loading : Bool;
+         Plate_Rotate : Bool;
+         Plate_Measure : Bool;
+         Reject : Bool;
+         Transport : Bool;
+      END_STRUCT;
+   END_VAR
+
+
+BEGIN
+   enable.TransferPLC := false;
+   enable.GlobalGrafcet := false;
+   enable.Feeding := false;
+   enable.Loading := false;
+   enable.Rotate := false;
+   enable.Measure := false;
+   enable.Reject := false;
+   enable.Transport := false;
+   init.GlobalGrafcet := false;
+   init.Feeding := false;
+   init.Loading := false;
+   init.Rotate := false;
+   init.Measure := false;
+   init.Reject := false;
+   init.Transport := false;
+   value.RecipeType := 0;
+   value.RejectBit := false;
+   value.CoverLoaded := false;
+   signal.Transfer_CarrierReady := false;
+   signal.Feeding_ReadyToReload := false;
+   signal.Loading_ReadyToPlace := false;
+   signal.Plate_ReadyToRotate := false;
+   signal.Plate_ReadyToMeasure := false;
+   signal.Reject_ReadyToReject := false;
+   signal.Transport_ReadyToTransport := false;
+   cmd.Loading := false;
+   cmd.Plate_Rotate := false;
+   cmd.Plate_Measure := false;
+   cmd.Reject := false;
+   cmd.Transport := false;
+
+END_DATA_BLOCK
+

@@ -1,0 +1,10 @@
+﻿DATA_BLOCK "ID_Algemeen_PE_StartStop"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+NON_RETAIN
+"FB_PE_StartStop"
+
+BEGIN
+
+END_DATA_BLOCK
+

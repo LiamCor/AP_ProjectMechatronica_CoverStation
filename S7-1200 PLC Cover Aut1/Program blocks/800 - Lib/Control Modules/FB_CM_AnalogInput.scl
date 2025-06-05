@@ -1,0 +1,66 @@
+﻿FUNCTION_BLOCK "FB_CM_AnalogInput"
+TITLE = FB_CM_AnalogInput AP BIB
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+//07/06/2023: v1 (LAJ)
+   VAR_INPUT 
+      iAI_Raw : Int;
+      iRangeMin_EU : Real;
+      iRangeMax_EU : Real;
+      iSetting_Bipolar { S7_HiddenAssignment := 'Hide'} : Bool;
+      iSetting_PT100 { S7_HiddenAssignment := 'Hide'} : Bool;   // if ISetting_PT100 is true, iRangeMin and iRangeMax are not used
+      iSetting_CustomScale_Enable { S7_HiddenAssignment := 'Hide'} : Bool;   // if no siemens input is used, scaling is not always with 0-27648
+      iSetting_CustomScale_RawMin { S7_HiddenAssignment := 'Hide'} : Int;
+      iSetting_CustomScale_RawMax { S7_HiddenAssignment := 'Hide'} : Int;
+   END_VAR
+
+   VAR_OUTPUT 
+      oAI_EU : Real;   // EU: engineering units
+      oOutOfLimit : Bool;
+   END_VAR
+
+   VAR_TEMP 
+      tScaleValueMax : Real;
+      tScaleValueMin : Real;
+   END_VAR
+
+
+BEGIN
+	//PT100
+	IF #iSetting_PT100 = TRUE THEN
+	    #oAI_EU := INT_TO_REAL(#iAI_Raw) / 10;
+	        //alarm limit
+	        IF #iAI_Raw = 32767 THEN //if PT100 not connected -> values becomes 32767
+	            #oOutOfLimit := TRUE;
+	        ELSE
+	            #oOutOfLimit := FALSE;
+	        END_IF;
+	    RETURN; //ignore rest of code
+	END_IF;
+	
+	//define tScaleValueMax en tScaleValueMin
+	IF #iSetting_CustomScale_Enable = FALSE THEN //'normal' situation (siemens)
+	    #tScaleValueMin := 0.0;
+	    #tScaleValueMax := 27648.0;
+	ELSE 
+	    #tScaleValueMin := #iSetting_CustomScale_RawMin;
+	    #tScaleValueMax := #iSetting_CustomScale_RawMax;
+	END_IF;
+	
+	IF #iSetting_Bipolar = TRUE THEN
+	    #tScaleValueMin := -1 * #tScaleValueMax;
+	ELSE
+	    #tScaleValueMin := 0.0;
+	END_IF;
+	
+	//calculate scaled value
+	#oAI_EU := #iRangeMin_EU + (((#iAI_Raw-#tScaleValueMin) / (#tScaleValueMax- #tScaleValueMin))) * (#iRangeMax_EU - #iRangeMin_EU);
+	
+	//out of limit
+	IF #iAI_Raw > #tScaleValueMax OR #iAI_Raw < #tScaleValueMin THEN
+	    #oOutOfLimit := TRUE;
+	ELSE
+	    #oOutOfLimit := FALSE;
+	END_IF;
+END_FUNCTION_BLOCK
+

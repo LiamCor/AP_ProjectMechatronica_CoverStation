@@ -1,0 +1,1585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V19" />
+  <SW.Blocks.FC ID="0">
+    <AttributeList>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+  <Section Name="Input" />
+  <Section Name="Output" />
+  <Section Name="InOut" />
+  <Section Name="Temp">
+    <Member Name="Debug" Datatype="Bool" />
+  </Section>
+  <Section Name="Constant" />
+  <Section Name="Return">
+    <Member Name="Ret_Val" Datatype="Void" />
+  </Section>
+</Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>FC_EM_Plate</Name>
+      <Namespace />
+      <Number>4</Number>
+      <ProgrammingLanguage>FBD</ProgrammingLanguage>
+      <SetENOAutomatically>false</SetENOAutomatically>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <SW.Blocks.CompileUnit ID="3" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource />
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="4" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="5" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="6" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="7" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>------------------------------------------------------------------------ Inputs ------------------------------------------------------------------------</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="8" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="iPlateSenCilPushingIn_d0" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenCilPushingIn" />
+      </Symbol>
+    </Access>
+    <Call UId="23">
+      <CallInfo Name="FB_CM_DI_Sensor" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="24">
+          <Component Name="ID_Plate_CM_DI_iPlateSenCilPushingIn_d0" />
+        </Instance>
+        <Parameter Name="iSen" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_TON" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_TOF" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_Alm_En" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="oSen_TON_TOF" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm" Section="Output" Type="Bool" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="31">
+      <OpenCon UId="25" />
+      <NameCon UId="23" Name="en" />
+    </Wire>
+    <Wire UId="32">
+      <IdentCon UId="21" />
+      <NameCon UId="23" Name="iSen" />
+    </Wire>
+    <Wire UId="33">
+      <OpenCon UId="26" />
+      <NameCon UId="23" Name="iSetting_TON" />
+    </Wire>
+    <Wire UId="34">
+      <OpenCon UId="27" />
+      <NameCon UId="23" Name="iSetting_TOF" />
+    </Wire>
+    <Wire UId="35">
+      <OpenCon UId="28" />
+      <NameCon UId="23" Name="iSetting_Alm_En" />
+    </Wire>
+    <Wire UId="36">
+      <OpenCon UId="29" />
+      <NameCon UId="23" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="37">
+      <NameCon UId="23" Name="oSen_TON_TOF" />
+      <IdentCon UId="22" />
+    </Wire>
+    <Wire UId="38">
+      <NameCon UId="23" Name="oAlm" />
+      <OpenCon UId="30" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="9" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="A" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="B" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="C" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Verwerken iPlateSenCilPushingIn_d0</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="D" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="iPlateSenInductive_dm" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenInductive" />
+      </Symbol>
+    </Access>
+    <Call UId="23">
+      <CallInfo Name="FB_CM_DI_Sensor" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="24">
+          <Component Name="ID_Plate_CM_DI_iPlateSenInductive_dm" />
+        </Instance>
+        <Parameter Name="iSen" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_TON" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_TOF" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_Alm_En" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="oSen_TON_TOF" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm" Section="Output" Type="Bool" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="31">
+      <OpenCon UId="25" />
+      <NameCon UId="23" Name="en" />
+    </Wire>
+    <Wire UId="32">
+      <IdentCon UId="21" />
+      <NameCon UId="23" Name="iSen" />
+    </Wire>
+    <Wire UId="33">
+      <OpenCon UId="26" />
+      <NameCon UId="23" Name="iSetting_TON" />
+    </Wire>
+    <Wire UId="34">
+      <OpenCon UId="27" />
+      <NameCon UId="23" Name="iSetting_TOF" />
+    </Wire>
+    <Wire UId="35">
+      <OpenCon UId="28" />
+      <NameCon UId="23" Name="iSetting_Alm_En" />
+    </Wire>
+    <Wire UId="36">
+      <OpenCon UId="29" />
+      <NameCon UId="23" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="37">
+      <NameCon UId="23" Name="oSen_TON_TOF" />
+      <IdentCon UId="22" />
+    </Wire>
+    <Wire UId="38">
+      <NameCon UId="23" Name="oAlm" />
+      <OpenCon UId="30" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="E" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="F" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="10" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="11" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Verwerking iPlateSenInductive_dm</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="12" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="iPlateSenPresence_dp" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenPresence" />
+      </Symbol>
+    </Access>
+    <Call UId="23">
+      <CallInfo Name="FB_CM_DI_Sensor" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="24">
+          <Component Name="ID_Plate_CM_DI_iPlateSenPresence_dp" />
+        </Instance>
+        <Parameter Name="iSen" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_TON" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_TOF" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_Alm_En" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="oSen_TON_TOF" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm" Section="Output" Type="Bool" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="31">
+      <OpenCon UId="25" />
+      <NameCon UId="23" Name="en" />
+    </Wire>
+    <Wire UId="32">
+      <IdentCon UId="21" />
+      <NameCon UId="23" Name="iSen" />
+    </Wire>
+    <Wire UId="33">
+      <OpenCon UId="26" />
+      <NameCon UId="23" Name="iSetting_TON" />
+    </Wire>
+    <Wire UId="34">
+      <OpenCon UId="27" />
+      <NameCon UId="23" Name="iSetting_TOF" />
+    </Wire>
+    <Wire UId="35">
+      <OpenCon UId="28" />
+      <NameCon UId="23" Name="iSetting_Alm_En" />
+    </Wire>
+    <Wire UId="36">
+      <OpenCon UId="29" />
+      <NameCon UId="23" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="37">
+      <NameCon UId="23" Name="oSen_TON_TOF" />
+      <IdentCon UId="22" />
+    </Wire>
+    <Wire UId="38">
+      <NameCon UId="23" Name="oAlm" />
+      <OpenCon UId="30" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="13" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="14" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="15" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="16" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Verwerking iPlateSenPresence_dp</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="17" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="iPlateSenNotBlack" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenNotBlack" />
+      </Symbol>
+    </Access>
+    <Call UId="23">
+      <CallInfo Name="FB_CM_DI_Sensor" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="24">
+          <Component Name="ID_Plate_CM_DI_iPlateSenNotBlack" />
+        </Instance>
+        <Parameter Name="iSen" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_TON" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_TOF" Section="Input" Type="Time" />
+        <Parameter Name="iSetting_Alm_En" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="oSen_TON_TOF" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm" Section="Output" Type="Bool" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="31">
+      <OpenCon UId="25" />
+      <NameCon UId="23" Name="en" />
+    </Wire>
+    <Wire UId="32">
+      <IdentCon UId="21" />
+      <NameCon UId="23" Name="iSen" />
+    </Wire>
+    <Wire UId="33">
+      <OpenCon UId="26" />
+      <NameCon UId="23" Name="iSetting_TON" />
+    </Wire>
+    <Wire UId="34">
+      <OpenCon UId="27" />
+      <NameCon UId="23" Name="iSetting_TOF" />
+    </Wire>
+    <Wire UId="35">
+      <OpenCon UId="28" />
+      <NameCon UId="23" Name="iSetting_Alm_En" />
+    </Wire>
+    <Wire UId="36">
+      <OpenCon UId="29" />
+      <NameCon UId="23" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="37">
+      <NameCon UId="23" Name="oSen_TON_TOF" />
+      <IdentCon UId="22" />
+    </Wire>
+    <Wire UId="38">
+      <NameCon UId="23" Name="oAlm" />
+      <OpenCon UId="30" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="18" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="19" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="1A" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="1B" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Verwerking iPlateSenNotBlack</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="1C" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><StructuredText xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/StructuredText/v4">
+  <Access Scope="GlobalVariable" UId="21">
+    <Symbol UId="22">
+      <Component Name="DB_IO" UId="23">
+        <BooleanAttribute Name="HasQuotes" UId="24">true</BooleanAttribute>
+      </Component>
+      <Token Text="." UId="25" />
+      <Component Name="plate" UId="26" />
+      <Token Text="." UId="27" />
+      <Component Name="iPlateSenHeight" UId="28" />
+    </Symbol>
+  </Access>
+  <Blank UId="29" />
+  <Token Text=":=" UId="30" />
+  <Blank UId="31" />
+  <Access Scope="GlobalVariable" UId="32">
+    <Symbol UId="33">
+      <Component Name="iPlateSenHeight" UId="34">
+        <BooleanAttribute Name="HasQuotes" UId="35">true</BooleanAttribute>
+      </Component>
+    </Symbol>
+  </Access>
+  <Token Text=";" UId="36" />
+</StructuredText></NetworkSource>
+          <ProgrammingLanguage>SCL</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="1D" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="1E" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="1F" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="20" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Verwerking iPlateSenHeight</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="21" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource />
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="22" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="23" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="24" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="25" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>------------------------------------------------------------------------ Logic ------------------------------------------------------------------------</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="26" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="enable" />
+        <Component Name="Rotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="init_rotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="init" />
+        <Component Name="Rotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="general" />
+        <Component Name="man" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="25">
+      <Symbol>
+        <Component Name="DB_Alarm" />
+        <Component Name="general" />
+        <Component Name="global" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="26">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="cmdRotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="27">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="cmd" />
+        <Component Name="Plate_Rotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="28">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenCilPushingIn" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="29">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="currentCovers" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="30">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="sigReadyToRotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="31">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilLocking" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="32">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilPushing" />
+      </Symbol>
+    </Access>
+    <Part Name="O" UId="33">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+    </Part>
+    <Part Name="A" UId="34">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+      <Negated Name="in1" />
+      <Negated Name="in2" />
+    </Part>
+    <Part Name="O" UId="35">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+    </Part>
+    <Call UId="36">
+      <CallInfo Name="FB_PE_Plate_Rotate" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="37">
+          <Component Name="ID_PE_Plate_Grafcet" />
+        </Instance>
+        <Parameter Name="i_Init" Section="Input" Type="Bool" />
+        <Parameter Name="i_Enable" Section="Input" Type="Bool" />
+        <Parameter Name="i_CmdRotate" Section="Input" Type="Bool" />
+        <Parameter Name="iSenCilPushingIn" Section="Input" Type="Bool" />
+        <Parameter Name="o_ReadyToRotate" Section="Output" Type="Bool" />
+        <Parameter Name="oCilLock" Section="Output" Type="Bool" />
+        <Parameter Name="oCilPush" Section="Output" Type="Bool" />
+        <Parameter Name="io_currentCovers" Section="InOut" Type="Array[0..7] of &quot;UDT_coverProperties&quot;" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="38">
+      <IdentCon UId="22" />
+      <NameCon UId="33" Name="in1" />
+    </Wire>
+    <Wire UId="39">
+      <IdentCon UId="23" />
+      <NameCon UId="33" Name="in2" />
+    </Wire>
+    <Wire UId="40">
+      <NameCon UId="33" Name="out" />
+      <NameCon UId="36" Name="i_Init" />
+    </Wire>
+    <Wire UId="41">
+      <IdentCon UId="24" />
+      <NameCon UId="34" Name="in1" />
+    </Wire>
+    <Wire UId="42">
+      <IdentCon UId="25" />
+      <NameCon UId="34" Name="in2" />
+    </Wire>
+    <Wire UId="43">
+      <NameCon UId="34" Name="out" />
+      <NameCon UId="36" Name="i_Enable" />
+    </Wire>
+    <Wire UId="44">
+      <IdentCon UId="26" />
+      <NameCon UId="35" Name="in1" />
+    </Wire>
+    <Wire UId="45">
+      <IdentCon UId="27" />
+      <NameCon UId="35" Name="in2" />
+    </Wire>
+    <Wire UId="46">
+      <NameCon UId="35" Name="out" />
+      <NameCon UId="36" Name="i_CmdRotate" />
+    </Wire>
+    <Wire UId="47">
+      <IdentCon UId="21" />
+      <NameCon UId="36" Name="en" />
+    </Wire>
+    <Wire UId="48">
+      <IdentCon UId="28" />
+      <NameCon UId="36" Name="iSenCilPushingIn" />
+    </Wire>
+    <Wire UId="49">
+      <IdentCon UId="29" />
+      <NameCon UId="36" Name="io_currentCovers" />
+    </Wire>
+    <Wire UId="50">
+      <NameCon UId="36" Name="o_ReadyToRotate" />
+      <IdentCon UId="30" />
+    </Wire>
+    <Wire UId="51">
+      <NameCon UId="36" Name="oCilLock" />
+      <IdentCon UId="31" />
+    </Wire>
+    <Wire UId="52">
+      <NameCon UId="36" Name="oCilPush" />
+      <IdentCon UId="32" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="27" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="28" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="29" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="2A" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Grafcet Rotate</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="2B" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="enable" />
+        <Component Name="Measure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="init_rotate" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="init" />
+        <Component Name="Measure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="general" />
+        <Component Name="man" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="25">
+      <Symbol>
+        <Component Name="DB_Alarm" />
+        <Component Name="general" />
+        <Component Name="global" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="26">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="cmdMeasure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="27">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="cmd" />
+        <Component Name="Plate_Measure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="28">
+      <Symbol>
+        <Component Name="DB_Testing" />
+        <Component Name="value" />
+        <Component Name="RecipeType" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="29">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenHeight" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="30">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenInductive" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="31">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenPresence" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="32">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="iPlateSenNotBlack" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="33">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="currentCovers" AccessModifier="Array">
+          <Access Scope="LiteralConstant">
+            <Constant>
+              <ConstantType>DInt</ConstantType>
+              <ConstantValue>5</ConstantValue>
+            </Constant>
+          </Access>
+        </Component>
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="34">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="sigReadyToMeasure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="35">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="currentCovers" AccessModifier="Array">
+          <Access Scope="LiteralConstant">
+            <Constant>
+              <ConstantType>DInt</ConstantType>
+              <ConstantValue>2</ConstantValue>
+            </Constant>
+          </Access>
+        </Component>
+        <Component Name="properties" />
+        <Component Name="metallic" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="36">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="currentCovers" AccessModifier="Array">
+          <Access Scope="LiteralConstant">
+            <Constant>
+              <ConstantType>DInt</ConstantType>
+              <ConstantValue>4</ConstantValue>
+            </Constant>
+          </Access>
+        </Component>
+        <Component Name="properties" />
+        <Component Name="notBlack" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="37">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="plate" />
+        <Component Name="currentCovers" AccessModifier="Array">
+          <Access Scope="LiteralConstant">
+            <Constant>
+              <ConstantType>DInt</ConstantType>
+              <ConstantValue>3</ConstantValue>
+            </Constant>
+          </Access>
+        </Component>
+        <Component Name="loaded" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="38">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilMeasuringDown" />
+      </Symbol>
+    </Access>
+    <Part Name="O" UId="39">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+    </Part>
+    <Part Name="A" UId="40">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+      <Negated Name="in1" />
+      <Negated Name="in2" />
+    </Part>
+    <Part Name="O" UId="41">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+    </Part>
+    <Call UId="42">
+      <CallInfo Name="FB_PE_Plate_Measure" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="43">
+          <Component Name="ID_PE_Plate_Measure" />
+        </Instance>
+        <Parameter Name="i_Init" Section="Input" Type="Bool" />
+        <Parameter Name="iEnable" Section="Input" Type="Bool" />
+        <Parameter Name="iCmdMeasure" Section="Input" Type="Bool" />
+        <Parameter Name="i_int_currentRecipe" Section="Input" Type="Int" />
+        <Parameter Name="i_int_SenHeight" Section="Input" Type="Int" />
+        <Parameter Name="iSenInductive" Section="Input" Type="Bool" />
+        <Parameter Name="iSenPresence" Section="Input" Type="Bool" />
+        <Parameter Name="iSenNotBlack" Section="Input" Type="Bool" />
+        <Parameter Name="o_ReadyToMeasure" Section="Output" Type="Bool" />
+        <Parameter Name="o_Metallic" Section="Output" Type="Bool" />
+        <Parameter Name="o_propertyNotBlack" Section="Output" Type="Bool" />
+        <Parameter Name="o_present" Section="Output" Type="Bool" />
+        <Parameter Name="oCilMeasure" Section="Output" Type="Bool" />
+        <Parameter Name="IO_completelyMeasuredCover" Section="InOut" Type="&quot;UDT_coverProperties&quot;" />
+      </CallInfo>
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="44">
+      <IdentCon UId="22" />
+      <NameCon UId="39" Name="in1" />
+    </Wire>
+    <Wire UId="45">
+      <IdentCon UId="23" />
+      <NameCon UId="39" Name="in2" />
+    </Wire>
+    <Wire UId="46">
+      <NameCon UId="39" Name="out" />
+      <NameCon UId="42" Name="i_Init" />
+    </Wire>
+    <Wire UId="47">
+      <IdentCon UId="24" />
+      <NameCon UId="40" Name="in1" />
+    </Wire>
+    <Wire UId="48">
+      <IdentCon UId="25" />
+      <NameCon UId="40" Name="in2" />
+    </Wire>
+    <Wire UId="49">
+      <NameCon UId="40" Name="out" />
+      <NameCon UId="42" Name="iEnable" />
+    </Wire>
+    <Wire UId="50">
+      <IdentCon UId="26" />
+      <NameCon UId="41" Name="in1" />
+    </Wire>
+    <Wire UId="51">
+      <IdentCon UId="27" />
+      <NameCon UId="41" Name="in2" />
+    </Wire>
+    <Wire UId="52">
+      <NameCon UId="41" Name="out" />
+      <NameCon UId="42" Name="iCmdMeasure" />
+    </Wire>
+    <Wire UId="53">
+      <IdentCon UId="21" />
+      <NameCon UId="42" Name="en" />
+    </Wire>
+    <Wire UId="54">
+      <IdentCon UId="28" />
+      <NameCon UId="42" Name="i_int_currentRecipe" />
+    </Wire>
+    <Wire UId="55">
+      <IdentCon UId="29" />
+      <NameCon UId="42" Name="i_int_SenHeight" />
+    </Wire>
+    <Wire UId="56">
+      <IdentCon UId="30" />
+      <NameCon UId="42" Name="iSenInductive" />
+    </Wire>
+    <Wire UId="57">
+      <IdentCon UId="31" />
+      <NameCon UId="42" Name="iSenPresence" />
+    </Wire>
+    <Wire UId="58">
+      <IdentCon UId="32" />
+      <NameCon UId="42" Name="iSenNotBlack" />
+    </Wire>
+    <Wire UId="59">
+      <IdentCon UId="33" />
+      <NameCon UId="42" Name="IO_completelyMeasuredCover" />
+    </Wire>
+    <Wire UId="60">
+      <NameCon UId="42" Name="o_ReadyToMeasure" />
+      <IdentCon UId="34" />
+    </Wire>
+    <Wire UId="61">
+      <NameCon UId="42" Name="o_Metallic" />
+      <IdentCon UId="35" />
+    </Wire>
+    <Wire UId="62">
+      <NameCon UId="42" Name="o_propertyNotBlack" />
+      <IdentCon UId="36" />
+    </Wire>
+    <Wire UId="63">
+      <NameCon UId="42" Name="o_present" />
+      <IdentCon UId="37" />
+    </Wire>
+    <Wire UId="64">
+      <NameCon UId="42" Name="oCilMeasure" />
+      <IdentCon UId="38" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="2C" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="2D" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>TODO:
+- Correct placement in array</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="2E" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="2F" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Grafcet Measure</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="30" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource />
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="31" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="32" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="33" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="34" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>------------------------------------------------------------------------ Outputs ------------------------------------------------------------------------</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="35" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="general" />
+        <Component Name="man" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilPushing" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilPushing" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="DB_HMI" />
+        <Component Name="plate" />
+        <Component Name="write_toPLC" />
+        <Component Name="Man_Push" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="25">
+      <Symbol>
+        <Component Name="DB_HMI" />
+        <Component Name="plate" />
+        <Component Name="write_toPLC" />
+        <Component Name="Man_Push" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="26">
+      <Symbol>
+        <Component Name="oPlateVenCilMeasuringDown_L+" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="27">
+      <Symbol>
+        <Component Name="oPlateVenCilPushing_D+" />
+      </Symbol>
+    </Access>
+    <Call UId="28">
+      <CallInfo Name="FB_CM_Cilinder" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="29">
+          <Component Name="ID_Plate_CM_oPlateVenCilPushing_D+" />
+        </Instance>
+        <Parameter Name="iMode_Aut" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Aut_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Aut_In" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Man_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Man_In" Section="Input" Type="Bool" />
+        <Parameter Name="iIntLock_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iIntLock_In" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_Alm_Fb_En" Section="Input" Type="Bool" />
+        <Parameter Name="iSen_Fb_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iSen_Fb_In" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_Alm_Fb_Time" Section="Input" Type="Time" />
+        <Parameter Name="oOut" Section="Output" Type="Bool" />
+        <Parameter Name="oIn" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm_Fb_Out" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm_Fb_In" Section="Output" Type="Bool" />
+      </CallInfo>
+      <Negated Name="iMode_Aut" />
+      <Negated Name="iCmd_Aut_In" />
+      <Negated Name="iCmd_Man_In" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="40">
+      <OpenCon UId="30" />
+      <NameCon UId="28" Name="en" />
+    </Wire>
+    <Wire UId="41">
+      <IdentCon UId="21" />
+      <NameCon UId="28" Name="iMode_Aut" />
+    </Wire>
+    <Wire UId="42">
+      <IdentCon UId="22" />
+      <NameCon UId="28" Name="iCmd_Aut_Out" />
+    </Wire>
+    <Wire UId="43">
+      <IdentCon UId="23" />
+      <NameCon UId="28" Name="iCmd_Aut_In" />
+    </Wire>
+    <Wire UId="44">
+      <IdentCon UId="24" />
+      <NameCon UId="28" Name="iCmd_Man_Out" />
+    </Wire>
+    <Wire UId="45">
+      <IdentCon UId="25" />
+      <NameCon UId="28" Name="iCmd_Man_In" />
+    </Wire>
+    <Wire UId="46">
+      <IdentCon UId="26" />
+      <NameCon UId="28" Name="iIntLock_Out" />
+    </Wire>
+    <Wire UId="47">
+      <OpenCon UId="31" />
+      <NameCon UId="28" Name="iIntLock_In" />
+    </Wire>
+    <Wire UId="48">
+      <OpenCon UId="32" />
+      <NameCon UId="28" Name="iSetting_Alm_Fb_En" />
+    </Wire>
+    <Wire UId="49">
+      <OpenCon UId="33" />
+      <NameCon UId="28" Name="iSen_Fb_Out" />
+    </Wire>
+    <Wire UId="50">
+      <OpenCon UId="34" />
+      <NameCon UId="28" Name="iSen_Fb_In" />
+    </Wire>
+    <Wire UId="51">
+      <OpenCon UId="35" />
+      <NameCon UId="28" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="52">
+      <OpenCon UId="36" />
+      <NameCon UId="28" Name="iSetting_Alm_Fb_Time" />
+    </Wire>
+    <Wire UId="53">
+      <NameCon UId="28" Name="oOut" />
+      <IdentCon UId="27" />
+    </Wire>
+    <Wire UId="54">
+      <NameCon UId="28" Name="oIn" />
+      <OpenCon UId="37" />
+    </Wire>
+    <Wire UId="55">
+      <NameCon UId="28" Name="oAlm_Fb_Out" />
+      <OpenCon UId="38" />
+    </Wire>
+    <Wire UId="56">
+      <NameCon UId="28" Name="oAlm_Fb_In" />
+      <OpenCon UId="39" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="36" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="37" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="38" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="39" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Sturen oPlateVenCilPushing_D+</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="3A" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="general" />
+        <Component Name="man" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilLocking" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilLocking" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="DB_HMI" />
+        <Component Name="plate" />
+        <Component Name="write_toPLC" />
+        <Component Name="Man_Lock" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="25">
+      <Symbol>
+        <Component Name="DB_HMI" />
+        <Component Name="plate" />
+        <Component Name="write_toPLC" />
+        <Component Name="Man_Lock" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="26">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilMeasuringDown" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="27">
+      <Symbol>
+        <Component Name="oPlateVenCilLocking_E+" />
+      </Symbol>
+    </Access>
+    <Call UId="28">
+      <CallInfo Name="FB_CM_Cilinder" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="29">
+          <Component Name="ID_Plate_CM_oPlateVenCilLocking_E+" />
+        </Instance>
+        <Parameter Name="iMode_Aut" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Aut_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Aut_In" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Man_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Man_In" Section="Input" Type="Bool" />
+        <Parameter Name="iIntLock_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iIntLock_In" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_Alm_Fb_En" Section="Input" Type="Bool" />
+        <Parameter Name="iSen_Fb_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iSen_Fb_In" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_Alm_Fb_Time" Section="Input" Type="Time" />
+        <Parameter Name="oOut" Section="Output" Type="Bool" />
+        <Parameter Name="oIn" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm_Fb_Out" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm_Fb_In" Section="Output" Type="Bool" />
+      </CallInfo>
+      <Negated Name="iMode_Aut" />
+      <Negated Name="iCmd_Aut_In" />
+      <Negated Name="iCmd_Man_In" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="40">
+      <OpenCon UId="30" />
+      <NameCon UId="28" Name="en" />
+    </Wire>
+    <Wire UId="41">
+      <IdentCon UId="21" />
+      <NameCon UId="28" Name="iMode_Aut" />
+    </Wire>
+    <Wire UId="42">
+      <IdentCon UId="22" />
+      <NameCon UId="28" Name="iCmd_Aut_Out" />
+    </Wire>
+    <Wire UId="43">
+      <IdentCon UId="23" />
+      <NameCon UId="28" Name="iCmd_Aut_In" />
+    </Wire>
+    <Wire UId="44">
+      <IdentCon UId="24" />
+      <NameCon UId="28" Name="iCmd_Man_Out" />
+    </Wire>
+    <Wire UId="45">
+      <IdentCon UId="25" />
+      <NameCon UId="28" Name="iCmd_Man_In" />
+    </Wire>
+    <Wire UId="46">
+      <OpenCon UId="31" />
+      <NameCon UId="28" Name="iIntLock_Out" />
+    </Wire>
+    <Wire UId="47">
+      <IdentCon UId="26" />
+      <NameCon UId="28" Name="iIntLock_In" />
+    </Wire>
+    <Wire UId="48">
+      <OpenCon UId="32" />
+      <NameCon UId="28" Name="iSetting_Alm_Fb_En" />
+    </Wire>
+    <Wire UId="49">
+      <OpenCon UId="33" />
+      <NameCon UId="28" Name="iSen_Fb_Out" />
+    </Wire>
+    <Wire UId="50">
+      <OpenCon UId="34" />
+      <NameCon UId="28" Name="iSen_Fb_In" />
+    </Wire>
+    <Wire UId="51">
+      <OpenCon UId="35" />
+      <NameCon UId="28" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="52">
+      <OpenCon UId="36" />
+      <NameCon UId="28" Name="iSetting_Alm_Fb_Time" />
+    </Wire>
+    <Wire UId="53">
+      <NameCon UId="28" Name="oOut" />
+      <IdentCon UId="27" />
+    </Wire>
+    <Wire UId="54">
+      <NameCon UId="28" Name="oIn" />
+      <OpenCon UId="37" />
+    </Wire>
+    <Wire UId="55">
+      <NameCon UId="28" Name="oAlm_Fb_Out" />
+      <OpenCon UId="38" />
+    </Wire>
+    <Wire UId="56">
+      <NameCon UId="28" Name="oAlm_Fb_In" />
+      <OpenCon UId="39" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="3B" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="3C" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="3D" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="3E" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Sturen oPlateVenCilLocking_E+</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="3F" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21">
+      <Symbol>
+        <Component Name="DB_Global" />
+        <Component Name="general" />
+        <Component Name="man" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="22">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilMeasuringDown" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="23">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilMeasuringDown" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="24">
+      <Symbol>
+        <Component Name="DB_HMI" />
+        <Component Name="plate" />
+        <Component Name="write_toPLC" />
+        <Component Name="Man_Measure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="25">
+      <Symbol>
+        <Component Name="DB_HMI" />
+        <Component Name="plate" />
+        <Component Name="write_toPLC" />
+        <Component Name="Man_Measure" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="26">
+      <Symbol>
+        <Component Name="DB_IO" />
+        <Component Name="plate" />
+        <Component Name="oPlateVenCilLocking" />
+      </Symbol>
+    </Access>
+    <Access Scope="GlobalVariable" UId="27">
+      <Symbol>
+        <Component Name="oPlateVenCilMeasuringDown_L+" />
+      </Symbol>
+    </Access>
+    <Call UId="28">
+      <CallInfo Name="FB_CM_Cilinder" BlockType="FB">
+        <Instance Scope="GlobalVariable" UId="29">
+          <Component Name="ID_Plate_CM_oPlateVenCilMeasuringDown_L+" />
+        </Instance>
+        <Parameter Name="iMode_Aut" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Aut_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Aut_In" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Man_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Man_In" Section="Input" Type="Bool" />
+        <Parameter Name="iIntLock_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iIntLock_In" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_Alm_Fb_En" Section="Input" Type="Bool" />
+        <Parameter Name="iSen_Fb_Out" Section="Input" Type="Bool" />
+        <Parameter Name="iSen_Fb_In" Section="Input" Type="Bool" />
+        <Parameter Name="iCmd_Reset_Alm" Section="Input" Type="Bool" />
+        <Parameter Name="iSetting_Alm_Fb_Time" Section="Input" Type="Time" />
+        <Parameter Name="oOut" Section="Output" Type="Bool" />
+        <Parameter Name="oIn" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm_Fb_Out" Section="Output" Type="Bool" />
+        <Parameter Name="oAlm_Fb_In" Section="Output" Type="Bool" />
+      </CallInfo>
+      <Negated Name="iMode_Aut" />
+      <Negated Name="iCmd_Aut_In" />
+      <Negated Name="iCmd_Man_In" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="40">
+      <OpenCon UId="30" />
+      <NameCon UId="28" Name="en" />
+    </Wire>
+    <Wire UId="41">
+      <IdentCon UId="21" />
+      <NameCon UId="28" Name="iMode_Aut" />
+    </Wire>
+    <Wire UId="42">
+      <IdentCon UId="22" />
+      <NameCon UId="28" Name="iCmd_Aut_Out" />
+    </Wire>
+    <Wire UId="43">
+      <IdentCon UId="23" />
+      <NameCon UId="28" Name="iCmd_Aut_In" />
+    </Wire>
+    <Wire UId="44">
+      <IdentCon UId="24" />
+      <NameCon UId="28" Name="iCmd_Man_Out" />
+    </Wire>
+    <Wire UId="45">
+      <IdentCon UId="25" />
+      <NameCon UId="28" Name="iCmd_Man_In" />
+    </Wire>
+    <Wire UId="46">
+      <IdentCon UId="26" />
+      <NameCon UId="28" Name="iIntLock_Out" />
+    </Wire>
+    <Wire UId="47">
+      <OpenCon UId="31" />
+      <NameCon UId="28" Name="iIntLock_In" />
+    </Wire>
+    <Wire UId="48">
+      <OpenCon UId="32" />
+      <NameCon UId="28" Name="iSetting_Alm_Fb_En" />
+    </Wire>
+    <Wire UId="49">
+      <OpenCon UId="33" />
+      <NameCon UId="28" Name="iSen_Fb_Out" />
+    </Wire>
+    <Wire UId="50">
+      <OpenCon UId="34" />
+      <NameCon UId="28" Name="iSen_Fb_In" />
+    </Wire>
+    <Wire UId="51">
+      <OpenCon UId="35" />
+      <NameCon UId="28" Name="iCmd_Reset_Alm" />
+    </Wire>
+    <Wire UId="52">
+      <OpenCon UId="36" />
+      <NameCon UId="28" Name="iSetting_Alm_Fb_Time" />
+    </Wire>
+    <Wire UId="53">
+      <NameCon UId="28" Name="oOut" />
+      <IdentCon UId="27" />
+    </Wire>
+    <Wire UId="54">
+      <NameCon UId="28" Name="oIn" />
+      <OpenCon UId="37" />
+    </Wire>
+    <Wire UId="55">
+      <NameCon UId="28" Name="oAlm_Fb_Out" />
+      <OpenCon UId="38" />
+    </Wire>
+    <Wire UId="56">
+      <NameCon UId="28" Name="oAlm_Fb_In" />
+      <OpenCon UId="39" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>FBD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="40" CompositionName="Comment">
+            <ObjectList>
+              <MultilingualTextItem ID="41" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text />
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+          <MultilingualText ID="42" CompositionName="Title">
+            <ObjectList>
+              <MultilingualTextItem ID="43" CompositionName="Items">
+                <AttributeList>
+                  <Culture>en-US</Culture>
+                  <Text>Sturen oPlateVenCilMeasuringDown_L+</Text>
+                </AttributeList>
+              </MultilingualTextItem>
+            </ObjectList>
+          </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <MultilingualText ID="44" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="45" CompositionName="Items">
+            <AttributeList>
+              <Culture>en-US</Culture>
+              <Text />
+            </AttributeList>
+          </MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.FC>
+</Document>

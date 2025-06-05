@@ -1,0 +1,50 @@
+﻿FUNCTION "FC_setRejectBitInCoverProperties" : Bool
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_currentCover : "UDT_coverProperties";
+      i_currentRecipe : Int;
+   END_VAR
+
+
+BEGIN
+	REGION Don't reject empty place
+	    IF
+	        NOT #i_currentCover.loaded
+	    THEN
+	        #FC_setRejectBitInCoverProperties := FALSE;
+	        RETURN;
+	    END_IF;
+	END_REGION
+	
+	REGION Check recipe
+	    
+	    // Recipe
+	    // 1 = Black
+	    // 2 = Metallic
+	    
+	    REGION Black
+	        IF
+	            (#i_currentRecipe = 1)
+	            AND NOT (#i_currentCover.properties.metallic)
+	            AND NOT (#i_currentCover.properties.notBlack)
+	        THEN
+	            #FC_setRejectBitInCoverProperties := FALSE;
+	            RETURN;
+	        END_IF;
+	    END_REGION
+	    
+	    REGION Metallic
+	        IF
+	            (#i_currentRecipe = 2)
+	            AND #i_currentCover.properties.metallic
+	        THEN
+	            #FC_setRejectBitInCoverProperties := FALSE;
+	            RETURN;
+	        END_IF;
+	    END_REGION
+	END_REGION
+	
+	#FC_setRejectBitInCoverProperties := TRUE;
+END_FUNCTION
+

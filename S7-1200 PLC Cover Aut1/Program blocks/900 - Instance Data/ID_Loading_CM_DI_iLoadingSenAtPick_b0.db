@@ -1,0 +1,10 @@
+﻿DATA_BLOCK "ID_Loading_CM_DI_iLoadingSenAtPick_b0"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+NON_RETAIN
+"FB_CM_DI_Sensor"
+
+BEGIN
+
+END_DATA_BLOCK
+

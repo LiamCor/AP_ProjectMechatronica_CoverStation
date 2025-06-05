@@ -1,0 +1,25 @@
+﻿FUNCTION "FC_Lamp_calcFlashPeriod" : Real
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      flashWarn : Bool;
+      flashAlarm : Bool;
+   END_VAR
+
+   VAR_TEMP 
+      xPeriod : Real;
+   END_VAR
+
+
+BEGIN
+	IF #flashAlarm THEN
+	    #xPeriod := 0.5;
+	ELSIF #flashWarn THEN
+	    #xPeriod := 1.0;
+	ELSE
+	    #xPeriod := 2.0;
+	END_IF;
+	
+	#FC_Lamp_calcFlashPeriod := #xPeriod;
+END_FUNCTION
+

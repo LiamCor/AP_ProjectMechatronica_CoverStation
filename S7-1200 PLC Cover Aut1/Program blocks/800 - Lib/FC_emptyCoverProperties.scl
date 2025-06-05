@@ -1,0 +1,18 @@
+﻿FUNCTION "FC_emptyCoverProperties" : "UDT_coverProperties"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP 
+      xEmptyCover : "UDT_coverProperties";
+   END_VAR
+
+
+BEGIN
+	#xEmptyCover.loaded := FALSE;
+	#xEmptyCover.reject := FALSE;
+	#xEmptyCover.properties.correctOrientation := FALSE;
+	#xEmptyCover.properties.metallic := FALSE;
+	#xEmptyCover.properties.notBlack := FALSE;
+	
+	#FC_emptyCoverProperties := #xEmptyCover;
+END_FUNCTION
+

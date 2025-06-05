@@ -1,0 +1,126 @@
+﻿FUNCTION_BLOCK "FB_PE_GlobalGrafcet"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      i_Init : Bool;
+      i_Enable : Bool;
+      i_int_CurrentRecipeType : Int;
+      i_Transfer_carrierReady : Bool;
+      i_Feeding_SigReadyToReload : Bool;
+      i_Loading_SigReadyToPlace : Bool;
+      i_Plate_SigReadyToRotate : Bool;
+      i_Plate_SigReadyToMeasure : Bool;
+      i_Reject_SigReadyToReject : Bool;
+      i_Transport_SigReadyToTransport : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      o_Loading_CmdPlaceNewCover : Bool;
+      o_Plate_CmdRotate : Bool;
+      o_Plate_CmdMeasure : Bool;
+      o_Reject_CmdReject : Bool;
+      o_Transport_CmdTransport : Bool;
+   END_VAR
+
+   VAR 
+      sStep : Int;
+      sInit : Bool;
+      sEdge_2to3 : Bool;
+   END_VAR
+
+   VAR_TEMP 
+      xEdge_2to3 : Bool;
+   END_VAR
+
+
+BEGIN
+	REGION init
+	    IF #i_Init AND NOT(#sInit = #i_Init) THEN
+	        #sStep := 0;
+	    END_IF;
+	    #sInit := #i_Init;
+	END_REGION
+	
+	REGION enable
+	    IF NOT #i_Enable THEN
+	        GOTO afterGrafcetLogic;
+	    END_IF;
+	END_REGION
+	
+	REGION edge detection
+	    
+	    REGION 2 to 3
+	        // Always false
+	        #xEdge_2to3 := FALSE;
+	        // Edge detect
+	        IF
+	            #i_Plate_SigReadyToRotate
+	            AND NOT #sEdge_2to3
+	        THEN
+	            #xEdge_2to3 := TRUE;
+	        END_IF;
+	        // Set equal for next check
+	        #sEdge_2to3 := #i_Plate_SigReadyToRotate;
+	    END_REGION
+	    
+	END_REGION
+	
+	REGION grafcet logic
+	    CASE #sStep OF
+	        0:
+	            IF
+	                ( #i_int_CurrentRecipeType = 1 OR #i_int_CurrentRecipeType = 2)
+	                AND #i_Feeding_SigReadyToReload
+	                AND #i_Loading_SigReadyToPlace
+	                AND #i_Plate_SigReadyToRotate
+	                AND #i_Plate_SigReadyToMeasure
+	                AND #i_Reject_SigReadyToReject
+	                AND #i_Transport_SigReadyToTransport
+	            THEN
+	                #sStep := 1;
+	            END_IF;
+	        1:
+	            #sStep := 2;
+	        2:
+	            IF #xEdge_2to3 THEN
+	                #sStep := 3;
+	            END_IF;
+	        3:
+	            #sStep := 4;
+	        4:
+	            IF
+	                #i_Reject_SigReadyToReject
+	                AND #i_Transfer_carrierReady
+	            THEN
+	                #sStep := 5;
+	            END_IF;
+	        5:
+	            #sStep := 6;
+	        6:
+	            IF
+	                #i_Transport_SigReadyToTransport
+	                AND #i_Loading_SigReadyToPlace
+	                AND #i_Plate_SigReadyToMeasure
+	            THEN
+	                #sStep := 0;
+	            END_IF;
+	        ELSE
+	            #sStep := 0;
+	    END_CASE;
+	    
+	END_REGION
+	
+	afterGrafcetLogic: // Jump destination
+	
+	REGION outputs
+	    
+	    #o_Loading_CmdPlaceNewCover := #sStep = 3;
+	    #o_Plate_CmdRotate := #sStep = 1;
+	    #o_Plate_CmdMeasure := #sStep = 3;
+	    #o_Reject_CmdReject := #sStep = 3;
+	    #o_Transport_CmdTransport := #sStep = 5;
+	                   
+	END_REGION
+	
+END_FUNCTION_BLOCK
+

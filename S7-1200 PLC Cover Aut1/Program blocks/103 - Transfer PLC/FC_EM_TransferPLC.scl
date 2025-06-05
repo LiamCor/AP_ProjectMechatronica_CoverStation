@@ -1,0 +1,40 @@
+﻿FUNCTION "FC_EM_TransferPLC" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+
+BEGIN
+	REGION Get
+	    "ID_GET_fromTransferPLC"(ID := W#16#100, // S7 connection ID
+	                             REQ := "Clock_1Hz", // Read on Rising Edge
+	                             
+	                             // Pointer to "readyToRecieve" bit in Transfer PLC
+	                             ADDR_1 := P#DB66.DBX0.0 Bool 1,
+	                             RD_1 := "DB_TransferPLC".CarrierReady,
+	                             
+	                             // Pointer to "watchdog" int in Transfer PLC
+	                             ADDR_2 := P#DB66.DBX2.0 Int 1,
+	                             RD_2 := "DB_TransferPLC".Watchdog,
+	                             
+	                             ERROR => "DB_Alarm".com.S7_GETerr);
+	END_REGION
+	
+	REGION Put
+	    "ID_PUT_toTransferPLC"(ID := W#16#100, // S7 connection ID
+	                           REQ := "Clock_1Hz", // Read on Rising Edge
+	                           
+	                           // Pointer to "itemPlaced" bit in Transfer PLC
+	                           ADDR_1 := P#DB66.DBX0.0 Bool 1,
+	                           SD_1 := "DB_TransferPLC".ItemPlaced,
+	                           
+	                           ERROR => "DB_Alarm".com.S7_PUTerr);
+	END_REGION
+	                        
+	REGION Watchdog
+	    "ID_TON_TransferPLCWatchdog".TON(IN := "DB_TransferPLC".Watchdog = "DB_Global".com.WD,
+	                                     PT := T#2s,
+	                                     Q => "DB_Alarm".com.WD);
+	    
+	    "DB_Global".com.WD := "DB_TransferPLC".Watchdog;
+	END_REGION
+END_FUNCTION
+

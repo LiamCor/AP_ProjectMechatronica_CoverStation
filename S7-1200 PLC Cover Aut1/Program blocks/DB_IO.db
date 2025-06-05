@@ -1,0 +1,65 @@
+﻿DATA_BLOCK "DB_IO"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      general : Struct   // IO dedicated to no specific EM
+         iDkStart : Bool;   // Processed input value
+         iDkStop : Bool;   // Processed input value
+         iSelSchMan : Bool;   // Processed input value
+         iDkReset : Bool;   // Processed input value
+         iSenPressure : Bool;   // Processed input value
+         iStsNoodstop : Bool;   // Processed input value
+         oLmpAlarm : Bool;   // Automatic output value
+         oLmpWarningLowMaterial : Bool;   // Automatic output value
+      END_STRUCT;
+      feeding : Struct   // IO dedicated to Feeding EM
+         iFeedingSenCilOut_k1 : Bool;   // Processed input value
+         iFeedingSenLoaded : Bool;   // Processed input value
+         "oFeedingVenCilOut_K+" : Bool;   // Automatic output value
+      END_STRUCT;
+      loading : Struct   // IO dedicated to Loading EM
+         iLoadingSenDown : Bool;   // Processed input value
+         iLoadingSenUp : Bool;   // Processed input value
+         iLoadingSenAtPick : Bool;   // Processed input value
+         iLoadingSenAtPlace : Bool;   // Processed input value
+         oLoadingVenCilDown : Bool;   // Automatic output value
+         oLoadingVenCilPlace : Bool;   // Automatic output value
+         oLoadingVenGrip : Bool;   // Automatic output value
+      END_STRUCT;
+      plate : Struct   // IO dedicated to Plate EM
+         iPlateSenCilPushingIn : Bool;   // Processed input value
+         iPlateSenInductive : Bool;   // Processed input value
+         iPlateSenPresence : Bool;   // Processed input value
+         iPlateSenNotBlack : Bool;   // Processed input value
+         iPlateSenHeight : Int;   // Processed input value
+         oPlateVenCilPushing : Bool;   // Automatic output value
+         oPlateVenCilLocking : Bool;   // Automatic output value
+         oPlateVenCilMeasuringDown : Bool;   // Automatic output value
+      END_STRUCT;
+      reject : Struct   // IO dedicated to Reject EM
+         iRejectSenCilIn : Bool;   // Processed input value
+         iRejectSenCilOut : Bool;   // Processed input value
+         iRejectSenCilUp : Bool;   // Processed input value
+         iRejectSenVacuum : Bool;   // Processed input value
+         oRejectVenCilOut : Bool;   // Automatic output value
+         oRejectVenCilIn : Bool;   // Automatic output value
+         oRejectVenCilDown : Bool;   // Automatic output value
+         oRejectVenVacuum : Bool;   // Automatic output value
+      END_STRUCT;
+      transport : Struct   // IO dedicated to Transport EM
+         iTransportSenDown : Bool;   // Processed input value
+         iTransportSenUp : Bool;   // Processed input value
+         iTransportSenAtPlate : Bool;   // Processed input value
+         iTransportSenAtCart : Bool;   // Processed input value
+         oTransportVenCilDown : Bool;   // Automatic output value
+         oTransportVenCilCart : Bool;   // Automatic output value
+         oTransportVenGripClosed : Bool;   // Automatic output value
+      END_STRUCT;
+   END_VAR
+
+
+BEGIN
+
+END_DATA_BLOCK
+

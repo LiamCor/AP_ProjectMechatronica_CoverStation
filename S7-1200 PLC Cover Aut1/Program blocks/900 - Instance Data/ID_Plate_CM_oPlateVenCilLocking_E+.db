@@ -1,0 +1,10 @@
+﻿DATA_BLOCK "ID_Plate_CM_oPlateVenCilLocking_E+"
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+NON_RETAIN
+"FB_CM_Cilinder"
+
+BEGIN
+
+END_DATA_BLOCK
+

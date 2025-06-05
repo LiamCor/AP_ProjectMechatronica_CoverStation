@@ -1,0 +1,15 @@
+﻿DATA_BLOCK "ID_PUT_toTransferPLC"
+{InstructionName := 'PUT';
+ LibVersion := '1.3';
+ S7_Optimized_Access := 'TRUE' }
+AUTHOR : SIMATIC
+FAMILY : COM_FUNC
+NAME : PUT
+VERSION : 1.1
+NON_RETAIN
+PUT
+
+BEGIN
+
+END_DATA_BLOCK
+
